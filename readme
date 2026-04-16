@@ -1,0 +1,33 @@
+# AMCP Clients
+
+> Web and desktop client applications for the AI Modular Cybersecurity Platform.
+
+## What lives here
+
+This repository contains the user-facing applications and client-side presentation layer.
+
+Includes:
+- web UI
+- desktop client
+- shared client-side assets if needed
+- front-end build and deployment configuration
+
+## Repository layout
+
+```text
+amcp-clients/
+├── interfaces/
+└── README.md
+```
+
+## How to use it
+
+1. Keep all user-facing applications here.
+2. Talk only to stable APIs, SDKs, or events.
+3. Do not depend on internal service or training code.
+
+## Related repos
+
+- amcp-platform-core
+- amcp-ai-engine
+- amcp-runtime-microservices
