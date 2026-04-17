@@ -3,7 +3,7 @@
   "framework": null,
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/amcp-web-client/browser",
+  "outputDirectory": "dist/amcp-admin-client/browser",
   "rewrites": [
     {
       "source": "/(.*)",
