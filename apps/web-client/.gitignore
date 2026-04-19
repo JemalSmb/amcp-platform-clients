@@ -30,7 +30,6 @@ yarn-error.log
 .history/*
 
 # Miscellaneous
-/.angular/cache
 .sass-cache/
 /connect.lock
 /coverage
@@ -42,3 +41,15 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Per-client build and local environment artifacts
+amcp-admin-client/dist/
+amcp-admin-client/node_modules/
+amcp-admin-client/.env
+
+amcp-web-client/dist/
+amcp-web-client/node_modules/
+amcp-web-client/.env
+
+amcp-admin-client/.angular/cache/
+amcp-web-client/.angular/cache/
