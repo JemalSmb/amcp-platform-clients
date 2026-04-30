@@ -1,0 +1,18 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/icons/admin">
+    <file alias="Logo.png">../assets/admin/Logo.png</file>
+    <file alias="Domain.svg">../assets/admin/Domain.svg</file>
+    <file alias="ModelRegisty.svg">../assets/admin/ModelRegisty.svg</file>
+    <file alias="Policies.svg">../assets/admin/Policies.svg</file>
+    <file alias="Messaging.svg">../assets/admin/Messaging.svg</file>
+    <file alias="Automation.svg">../assets/admin/Automation.svg</file>
+    <file alias="Integration.svg">../assets/admin/Integration.svg</file>
+    <file alias="Data.svg">../assets/admin/Data.svg</file>
+    <file alias="Users.svg">../assets/admin/Users.svg</file>
+    <file alias="Security.svg">../assets/admin/Security.svg</file>
+    <file alias="Observability.svg">../assets/admin/Observability.svg</file>
+    <file alias="Deployements.svg">../assets/admin/Deployements.svg</file>
+    <file alias="Audit.svg">../assets/admin/Audit.svg</file>
+    <file alias="SystemSettings.svg">../assets/admin/SystemSettings.svg</file>
+</qresource>
+</RCC>

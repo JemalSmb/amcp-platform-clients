@@ -1,0 +1,17 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/icons/user">
+    <file alias="Logo.png">../assets/user/Logo.png</file>
+    <file alias="Profile.svg">../assets/user/Profile.svg</file>
+    <file alias="Alert.svg">../assets/user/Alert.svg</file>
+    <file alias="Incident.svg">../assets/user/Incident.svg</file>
+    <file alias="Detection.svg">../assets/user/Detection.svg</file>
+    <file alias="Prediction.svg">../assets/user/Prediction.svg</file>
+    <file alias="Investigations.svg">../assets/user/Investigations.svg</file>
+    <file alias="Assets.svg">../assets/user/Assets.svg</file>
+    <file alias="Automation.svg">../assets/user/Automation.svg</file>
+    <file alias="Reports.svg">../assets/user/Reports.svg</file>
+    <file alias="Notification.svg">../assets/user/Notification.svg</file>
+    <file alias="Doc.svg">../assets/user/Doc.svg</file>
+    <file alias="MySettings.svg">../assets/user/MySettings.svg</file>
+</qresource>
+</RCC>
