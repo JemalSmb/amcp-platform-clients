@@ -7,14 +7,16 @@ import { AuthService } from './services/auth.service';
 export const authGuard: CanActivateFn = async () => {
   if (isPlatformServer(inject(PLATFORM_ID))) return true;
   const auth = inject(AuthService);
+  const router = inject(Router);
   const session = await auth.getSession();
-  return auth.roleOf(session) ? true : inject(Router).createUrlTree(['/auth/login']);
+  return auth.roleOf(session) ? true : router.createUrlTree(['/auth/login']);
 };
 
 // Redirects signed-in users away from /auth pages.
 export const guestGuard: CanActivateFn = async () => {
   if (isPlatformServer(inject(PLATFORM_ID))) return true;
   const auth = inject(AuthService);
+  const router = inject(Router);
   const session = await auth.getSession();
-  return auth.roleOf(session) ? inject(Router).createUrlTree(['/dashboard']) : true;
+  return auth.roleOf(session) ? router.createUrlTree(['/dashboard']) : true;
 };
