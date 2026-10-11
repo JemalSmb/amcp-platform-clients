@@ -1,0 +1,40 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Model Registry</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No models are registered for this domain yet.</p>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Model</th>
+					<th>Domain</th>
+					<th>Version</th>
+					<th>Owner</th>
+					<th>Deployed</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let model of models">
+					<td>{{ model.name }}</td>
+					<td>{{ model.domain }}</td>
+					<td>v{{ model.version }}</td>
+					<td>{{ model.owner }}</td>
+					<td>{{ model.deployedAt | date:'short' }}</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-success]="model.status === 'healthy'"
+							[class.badge-warning]="model.status === 'degraded'"
+							[class.badge-error]="model.status === 'offline'"
+						>{{ model.status }}</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

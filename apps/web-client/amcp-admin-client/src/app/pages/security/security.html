@@ -1,0 +1,31 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Security</h2>
+
+	<div class="overflow-x-auto">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Event</th>
+					<th>Actor</th>
+					<th>Severity</th>
+					<th>Occurred</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let event of events">
+					<td>{{ event.type }}</td>
+					<td class="font-mono text-sm">{{ event.actor }}</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-error]="event.severity === 'critical'"
+							[class.badge-warning]="event.severity === 'high' || event.severity === 'medium'"
+							[class.badge-ghost]="event.severity === 'low'"
+						>{{ event.severity }}</span>
+					</td>
+					<td>{{ event.occurredAt | date:'short' }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

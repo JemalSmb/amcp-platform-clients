@@ -1,0 +1,40 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Investigations</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No investigations are wired up for this domain yet.</p>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Domain</th>
+					<th>Status</th>
+					<th>Owner</th>
+					<th>Linked incidents</th>
+					<th>Updated</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let investigation of investigations">
+					<td>{{ investigation.title }}</td>
+					<td>{{ investigation.domain }}</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-error]="investigation.status === 'open'"
+							[class.badge-warning]="investigation.status === 'in_progress'"
+							[class.badge-success]="investigation.status === 'closed'"
+						>{{ investigation.status }}</span>
+					</td>
+					<td>{{ investigation.owner }}</td>
+					<td>{{ investigation.incidentIds.join(', ') }}</td>
+					<td>{{ investigation.updatedAt | date:'short' }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

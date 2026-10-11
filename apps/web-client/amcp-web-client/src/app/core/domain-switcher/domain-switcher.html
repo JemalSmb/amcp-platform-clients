@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-1.5">
+	<button
+		*ngFor="let domain of domainService.domains"
+		type="button"
+		class="domain-pill"
+		[class.domain-pill-active]="domainService.current() === domain.id"
+		[style.--pill-color]="domain.color"
+		[disabled]="domain.comingSoon"
+		(click)="select(domain.id)"
+	>
+		<span class="domain-dot" [style.background]="domain.color"></span>
+		<span class="is-drawer-close:hidden">{{ domain.label }}</span>
+		<span class="is-drawer-close:hidden badge badge-ghost badge-xs" *ngIf="domain.comingSoon">soon</span>
+	</button>
+</div>

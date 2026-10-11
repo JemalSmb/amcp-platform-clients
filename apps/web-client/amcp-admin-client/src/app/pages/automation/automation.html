@@ -1,0 +1,43 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Automation</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No playbooks are configured for this domain yet.</p>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Playbook</th>
+					<th>Domain</th>
+					<th>Trigger</th>
+					<th>Runs</th>
+					<th>Last run</th>
+					<th>Status</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let playbook of playbooks">
+					<td>{{ playbook.name }}</td>
+					<td>{{ playbook.domain }}</td>
+					<td class="text-xs text-gray-500">{{ playbook.trigger }}</td>
+					<td>{{ playbook.runCount }}</td>
+					<td>{{ playbook.lastRunAt | date:'short' }}</td>
+					<td>
+						<span class="badge" [class.badge-success]="playbook.status === 'enabled'" [class.badge-ghost]="playbook.status === 'disabled'">
+							{{ playbook.status }}
+						</span>
+					</td>
+					<td>
+						<button class="btn btn-sm" (click)="toggle(playbook)">
+							{{ playbook.status === 'enabled' ? 'Disable' : 'Enable' }}
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

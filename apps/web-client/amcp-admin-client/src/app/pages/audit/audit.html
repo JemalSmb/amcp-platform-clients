@@ -1,0 +1,24 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Audit Log</h2>
+
+	<div class="overflow-x-auto">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Actor</th>
+					<th>Action</th>
+					<th>Target</th>
+					<th>Occurred</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let entry of entries">
+					<td>{{ entry.actor }}</td>
+					<td>{{ entry.action }}</td>
+					<td class="font-mono text-sm">{{ entry.target }}</td>
+					<td>{{ entry.occurredAt | date:'short' }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

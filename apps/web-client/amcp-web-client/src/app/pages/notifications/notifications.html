@@ -1,0 +1,15 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Notifications</h2>
+
+	<ul class="divide-y divide-base-300">
+		<li *ngFor="let notification of notifications" class="flex items-center justify-between py-3">
+			<div>
+				<p [class.font-semibold]="!notification.read">{{ notification.message }}</p>
+				<p class="text-xs text-gray-500">{{ notification.createdAt | date:'short' }}</p>
+			</div>
+			<button class="btn btn-sm btn-ghost" *ngIf="!notification.read" (click)="markRead(notification)">
+				Mark read
+			</button>
+		</li>
+	</ul>
+</section>

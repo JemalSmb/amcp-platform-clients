@@ -1,0 +1,31 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Detections</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No detections are wired up for this domain yet.</p>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Signal</th>
+					<th>Model</th>
+					<th>Domain</th>
+					<th>Confidence</th>
+					<th>Detected</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let detection of detections">
+					<td>{{ detection.signal }}</td>
+					<td>{{ detection.modelId }}</td>
+					<td>{{ detection.domain }}</td>
+					<td>{{ detection.confidence | number:'1.2-2' }}</td>
+					<td>{{ detection.detectedAt | date:'short' }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

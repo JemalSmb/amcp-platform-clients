@@ -1,0 +1,24 @@
+<section class="w-full max-w-md space-y-6" *ngIf="profile">
+	<h2 class="text-3xl font-bold domain-heading">Profile</h2>
+
+	<div class="card bg-base-200">
+		<div class="card-body space-y-3">
+			<label class="form-control">
+				<span class="label-text">Name</span>
+				<input class="input input-bordered" [(ngModel)]="profile.name" />
+			</label>
+			<label class="form-control">
+				<span class="label-text">Email</span>
+				<input class="input input-bordered" [(ngModel)]="profile.email" />
+			</label>
+			<label class="form-control">
+				<span class="label-text">Role</span>
+				<input class="input input-bordered" [(ngModel)]="profile.role" disabled />
+			</label>
+			<label class="form-control">
+				<span class="label-text">Timezone</span>
+				<input class="input input-bordered" [(ngModel)]="profile.timezone" />
+			</label>
+		</div>
+	</div>
+</section>

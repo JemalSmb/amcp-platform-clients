@@ -1,0 +1,71 @@
+<section class="w-full space-y-6" *ngIf="overview">
+	<div class="flex items-center gap-3">
+		<h2 class="text-3xl font-bold domain-heading">Control</h2>
+		<span class="badge" [style.background]="domainService.currentMeta().color" [style.color]="'white'">{{ domainService.currentMeta().label }}</span>
+	</div>
+
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<div class="stat rounded-box bg-base-200">
+			<div class="stat-title">Active domains</div>
+			<div class="stat-value">{{ overview.activeDomains }}</div>
+		</div>
+		<div class="stat rounded-box bg-base-200">
+			<div class="stat-title">Models healthy</div>
+			<div class="stat-value">{{ overview.healthyModels }}/{{ overview.totalModels }}</div>
+		</div>
+		<div class="stat rounded-box bg-base-200">
+			<div class="stat-title">Active users</div>
+			<div class="stat-value">{{ overview.activeUsers }}</div>
+		</div>
+		<div class="stat rounded-box bg-base-200">
+			<div class="stat-title">Open security events</div>
+			<div class="stat-value">{{ overview.openSecurityEvents }}</div>
+		</div>
+		<div class="stat rounded-box bg-base-200">
+			<div class="stat-title">Running deployments</div>
+			<div class="stat-value">{{ overview.runningDeployments }}</div>
+		</div>
+	</div>
+
+	<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+		<div class="card bg-base-200">
+			<div class="card-body">
+				<h3 class="card-title">Domains</h3>
+				<ul class="divide-y divide-base-300">
+					<li *ngFor="let domain of domains" class="flex items-center justify-between py-2">
+						<div>
+							<p class="font-medium capitalize">{{ domain.name }}</p>
+							<p class="text-xs text-gray-500">{{ domain.modelCount }} models</p>
+						</div>
+						<span
+							class="badge"
+							[class.badge-success]="domain.state === 'active'"
+							[class.badge-ghost]="domain.state === 'planned'"
+							[class.badge-warning]="domain.state === 'inactive'"
+						>{{ domain.state }}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="card bg-base-200">
+			<div class="card-body">
+				<h3 class="card-title">Model registry (latest)</h3>
+				<ul class="divide-y divide-base-300">
+					<li *ngFor="let model of models" class="flex items-center justify-between py-2">
+						<div>
+							<p class="font-medium">{{ model.name }}</p>
+							<p class="text-xs text-gray-500">{{ model.domain }} · v{{ model.version }}</p>
+						</div>
+						<span
+							class="badge"
+							[class.badge-success]="model.status === 'healthy'"
+							[class.badge-warning]="model.status === 'degraded'"
+							[class.badge-error]="model.status === 'offline'"
+						>{{ model.status }}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>

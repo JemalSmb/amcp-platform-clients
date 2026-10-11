@@ -1,0 +1,13 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Help Docs</h2>
+
+	<div class="space-y-4">
+		<div class="card bg-base-200" *ngFor="let doc of docs">
+			<div class="card-body">
+				<span class="badge badge-ghost w-fit">{{ doc.category }}</span>
+				<h3 class="card-title text-lg">{{ doc.title }}</h3>
+				<p class="text-sm text-gray-500">{{ doc.summary }}</p>
+			</div>
+		</div>
+	</div>
+</section>

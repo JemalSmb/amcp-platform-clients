@@ -1,0 +1,8 @@
+<div class="toast toast-end toast-bottom z-50">
+	<div class="alert alert-info shadow-lg" *ngFor="let toast of toasts">
+		<span>
+			Model <strong>{{ toast.modelId }}</strong> updated to version <strong>{{ toast.version }}</strong>
+		</span>
+		<button class="btn btn-ghost btn-xs" (click)="dismiss(toast.id)">dismiss</button>
+	</div>
+</div>

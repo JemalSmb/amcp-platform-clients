@@ -1,0 +1,12 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Observability</h2>
+
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+		<div class="stat rounded-box bg-base-200" *ngFor="let metric of metrics">
+			<div class="stat-title">{{ metric.name }}</div>
+			<div class="stat-value text-2xl">{{ metric.value }}{{ metric.unit === '%' ? '%' : '' }}</div>
+			<div class="stat-desc" *ngIf="metric.unit !== '%'">{{ metric.unit }}</div>
+			<div class="stat-desc capitalize">trend: {{ metric.trend }}</div>
+		</div>
+	</div>
+</section>

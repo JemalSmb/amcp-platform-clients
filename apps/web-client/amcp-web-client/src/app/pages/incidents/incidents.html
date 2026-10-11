@@ -1,0 +1,47 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Incidents</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No incidents are wired up for this domain yet.</p>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Domain</th>
+					<th>Severity</th>
+					<th>Status</th>
+					<th>Assignee</th>
+					<th>Opened</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let incident of incidents">
+					<td>{{ incident.title }}</td>
+					<td>{{ incident.domain }}</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-error]="incident.severity === 'critical'"
+							[class.badge-warning]="incident.severity === 'high' || incident.severity === 'medium'"
+							[class.badge-ghost]="incident.severity === 'low'"
+						>{{ incident.severity }}</span>
+					</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-error]="incident.status === 'open'"
+							[class.badge-warning]="incident.status === 'investigating'"
+							[class.badge-success]="incident.status === 'resolved'"
+						>{{ incident.status }}</span>
+					</td>
+					<td>{{ incident.assignee }}</td>
+					<td>{{ incident.openedAt | date:'short' }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

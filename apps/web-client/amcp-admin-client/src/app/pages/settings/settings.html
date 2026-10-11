@@ -1,0 +1,34 @@
+<section class="w-full max-w-md space-y-6" *ngIf="settings">
+	<h2 class="text-3xl font-bold domain-heading">System Settings</h2>
+
+	<div class="card bg-base-200">
+		<div class="card-body space-y-4">
+			<label class="form-control">
+				<span class="label-text">Platform name</span>
+				<input class="input input-bordered" [(ngModel)]="settings.platformName" />
+			</label>
+
+			<label class="form-control">
+				<span class="label-text">Default alert severity</span>
+				<select class="select select-bordered" [(ngModel)]="settings.defaultAlertSeverity">
+					<option *ngFor="let severity of severities" [value]="severity">{{ severity }}</option>
+				</select>
+			</label>
+
+			<label class="form-control">
+				<span class="label-text">Data retention (days)</span>
+				<input class="input input-bordered" type="number" [(ngModel)]="settings.dataRetentionDays" />
+			</label>
+
+			<label class="label cursor-pointer justify-start gap-3">
+				<input type="checkbox" class="checkbox" [(ngModel)]="settings.maintenanceMode" />
+				<span class="label-text">Maintenance mode</span>
+			</label>
+
+			<div class="flex items-center gap-3">
+				<button class="btn btn-primary" (click)="save()">Save settings</button>
+				<span class="text-sm text-success" *ngIf="saved">Saved</span>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,21 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Domains</h2>
+
+	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<div class="card bg-base-200" *ngFor="let domain of domains">
+			<div class="card-body">
+				<div class="flex items-center justify-between">
+					<h3 class="card-title capitalize">{{ domain.name }}</h3>
+					<span
+						class="badge"
+						[class.badge-success]="domain.state === 'active'"
+						[class.badge-ghost]="domain.state === 'planned'"
+						[class.badge-warning]="domain.state === 'inactive'"
+					>{{ domain.state }}</span>
+				</div>
+				<p class="text-sm text-gray-500">{{ domain.description }}</p>
+				<p class="text-xs text-gray-500">{{ domain.modelCount }} models registered</p>
+			</div>
+		</div>
+	</div>
+</section>

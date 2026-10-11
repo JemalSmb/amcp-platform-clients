@@ -1,0 +1,38 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Assets</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No assets are wired up for this domain yet.</p>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Domain</th>
+					<th>Type</th>
+					<th>Risk</th>
+					<th>Last seen</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let asset of assets">
+					<td>{{ asset.name }}</td>
+					<td>{{ asset.domain }}</td>
+					<td>{{ asset.type }}</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-error]="asset.risk === 'high'"
+							[class.badge-warning]="asset.risk === 'medium'"
+							[class.badge-ghost]="asset.risk === 'low'"
+						>{{ asset.risk }}</span>
+					</td>
+					<td>{{ asset.lastSeenAt | date:'short' }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
