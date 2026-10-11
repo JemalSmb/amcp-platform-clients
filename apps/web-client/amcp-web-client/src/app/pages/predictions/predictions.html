@@ -1,0 +1,46 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Predictions</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No models are wired up for this domain yet.</p>
+	</div>
+
+	<div class="card bg-base-200" *ngIf="!domainService.currentMeta().comingSoon">
+		<div class="card-body flex-row flex-wrap items-end gap-4">
+			<label class="form-control w-full max-w-xs">
+				<span class="label-text">Model</span>
+				<select class="select select-bordered" [(ngModel)]="selectedModelId">
+					<option *ngFor="let model of models" [value]="model.id">{{ model.name }}</option>
+				</select>
+			</label>
+			<button class="btn btn-primary" [disabled]="running" (click)="runPrediction()">
+				<span *ngIf="running" class="loading loading-spinner loading-sm"></span>
+				Run prediction
+			</button>
+		</div>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Model</th>
+					<th>Domain</th>
+					<th>Label</th>
+					<th>Score</th>
+					<th>Time</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let prediction of predictions">
+					<td>{{ prediction.modelId }}</td>
+					<td>{{ prediction.domain }}</td>
+					<td>{{ prediction.label }}</td>
+					<td>{{ prediction.score | number:'1.2-2' }}</td>
+					<td>{{ prediction.createdAt | date:'short' }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

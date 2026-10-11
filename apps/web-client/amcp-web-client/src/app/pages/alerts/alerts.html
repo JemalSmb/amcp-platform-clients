@@ -1,0 +1,53 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Alerts</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No alerts are wired up for this domain yet.</p>
+	</div>
+
+	<ng-container *ngIf="!domainService.currentMeta().comingSoon">
+	<div class="flex flex-wrap gap-4">
+		<select class="select select-bordered" [(ngModel)]="severityFilter">
+			<option value="all">All severities</option>
+			<option *ngFor="let severity of severities" [value]="severity">{{ severity }}</option>
+		</select>
+	</div>
+
+	<div class="overflow-x-auto">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Domain</th>
+					<th>Severity</th>
+					<th>Model</th>
+					<th>Created</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let alert of filteredAlerts">
+					<td>
+						<p class="font-medium">{{ alert.title }}</p>
+						<p class="text-xs text-gray-500">{{ alert.summary }}</p>
+					</td>
+					<td>{{ alert.domain }}</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-error]="alert.severity === 'critical'"
+							[class.badge-warning]="alert.severity === 'high' || alert.severity === 'medium'"
+							[class.badge-ghost]="alert.severity === 'low'"
+						>{{ alert.severity }}</span>
+					</td>
+					<td>{{ alert.modelId }}</td>
+					<td>{{ alert.createdAt | date:'short' }}</td>
+				</tr>
+				<tr *ngIf="filteredAlerts.length === 0">
+					<td colspan="5" class="text-center text-gray-500">No alerts match the current filters.</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	</ng-container>
+</section>

@@ -1,0 +1,37 @@
+<section class="w-full max-w-md space-y-6" *ngIf="settings">
+	<h2 class="text-3xl font-bold domain-heading">Settings</h2>
+
+	<div class="card bg-base-200">
+		<div class="card-body space-y-4">
+			<label class="form-control">
+				<span class="label-text">Theme</span>
+				<select class="select select-bordered" [(ngModel)]="settings.theme">
+					<option value="light">Light</option>
+					<option value="dark">Dark</option>
+				</select>
+			</label>
+
+			<label class="form-control">
+				<span class="label-text">Alert severity threshold</span>
+				<select class="select select-bordered" [(ngModel)]="settings.alertSeverityThreshold">
+					<option *ngFor="let severity of severities" [value]="severity">{{ severity }}</option>
+				</select>
+			</label>
+
+			<label class="form-control">
+				<span class="label-text">Refresh interval (seconds)</span>
+				<input class="input input-bordered" type="number" [(ngModel)]="settings.refreshIntervalSeconds" />
+			</label>
+
+			<label class="label cursor-pointer justify-start gap-3">
+				<input type="checkbox" class="checkbox" [(ngModel)]="settings.emailAlerts" />
+				<span class="label-text">Email me on new alerts</span>
+			</label>
+
+			<div class="flex items-center gap-3">
+				<button class="btn btn-primary" (click)="save()">Save settings</button>
+				<span class="text-sm text-success" *ngIf="saved">Saved</span>
+			</div>
+		</div>
+	</div>
+</section>

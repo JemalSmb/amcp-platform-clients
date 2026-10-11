@@ -1,0 +1,54 @@
+<div class="drawer lg:drawer-open drawer-shell">
+	<input id="user-drawer" type="checkbox" class="drawer-toggle" />
+
+	<div class="drawer-content">
+		<div class="p-4">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+
+	<div class="drawer-side is-drawer-close:overflow-visible">
+		<label for="user-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+		<div class="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+			<div class="drawer-toggle-row">
+				<label for="user-drawer" aria-label="open sidebar" class="drawer-toggle-btn">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor" class="my-1.5 inline-block size-4">
+						<path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
+						<path d="M9 4v16"></path>
+						<path d="M14 10l2 2l-2 2"></path>
+					</svg>
+				</label>
+			</div>
+			<div class="w-full px-2 py-1">
+				<app-domain-switcher></app-domain-switcher>
+			</div>
+			<div class="divider is-drawer-close:hidden my-1"></div>
+			<ul class="menu w-full grow">
+				<li *ngFor="let item of menuItems">
+					<a
+						[routerLink]="getMenuRoute(item)"
+						routerLinkActive="domain-active-link"
+						[title]="item"
+						class="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+						[attr.data-tip]="item"
+					>
+						<img class="inline-block h-5 w-5" [src]="getMenuIcon(item)" [alt]="item" />
+						<span class="is-drawer-close:hidden">{{ item }}</span>
+					</a>
+				</li>
+			</ul>
+
+			<div class="w-full px-2 py-2">
+
+			  <button type="button" class="btn btn-ghost w-full justify-start is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Logout" (click)="logout()">
+
+			    <span class="is-drawer-close:hidden">Logout</span>
+
+			    <span class="hidden is-drawer-close:inline" aria-hidden="true">⎋</span>
+
+			  </button>
+
+			</div>
+		</div>
+	</div>
+</div>
