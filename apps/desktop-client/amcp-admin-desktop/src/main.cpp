@@ -214,7 +214,7 @@ int main(int argc, char *argv[]) {
             {"cybersecurity", "3", "active"},
             {"finance", "2", "active"},
             {"manufacturing", "2", "active"},
-            {"healthcare", "0", "planned"},
+            {"agriculture", "0", "planned"},
         }));
 
     stackedWidget->addWidget(createDataPage(&api, specs::adminDomains(),
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
             {"cybersecurity", "active", "Threat, phishing, and ransomware detection."},
             {"finance", "active", "Fraud and trading behavior anomaly detection."},
             {"manufacturing", "active", "Process anomaly and maintenance forecasting."},
-            {"healthcare", "planned", "Deferred until after MVP."},
+            {"agriculture", "planned", "Deferred until after MVP."},
         }));
 
     stackedWidget->addWidget(createDataPage(&api, specs::adminModels(),
