@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { DrawerNav } from './drawer-nav';
 
@@ -9,6 +10,7 @@ describe('DrawerNav', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DrawerNav],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DrawerNav);
