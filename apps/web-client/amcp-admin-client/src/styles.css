@@ -1,2 +1,22 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+:root {
+	--domain-color: #2563eb;
+	--domain-color-soft: #dbeafe;
+}
+
+.domain-heading {
+	display: inline-block;
+	border-bottom: 3px solid var(--domain-color);
+	padding-bottom: 0.25rem;
+}
+
+.domain-coming-soon {
+	border: 1px dashed color-mix(in srgb, var(--domain-color) 60%, transparent);
+	background: var(--domain-color-soft);
+	border-radius: 0.75rem;
+	padding: 2rem;
+	text-align: center;
+	color: color-mix(in srgb, var(--domain-color) 70%, black);
+}

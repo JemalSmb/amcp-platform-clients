@@ -1,0 +1,29 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Data Sources</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No data sources are wired up for this domain yet.</p>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Source</th>
+					<th>Domain</th>
+					<th>Records</th>
+					<th>Last ingested</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let source of sources">
+					<td>{{ source.name }}</td>
+					<td>{{ source.domain }}</td>
+					<td>{{ source.recordCount | number }}</td>
+					<td>{{ source.lastIngestedAt | date:'short' }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

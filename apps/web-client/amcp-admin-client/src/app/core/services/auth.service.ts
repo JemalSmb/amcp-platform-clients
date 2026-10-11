@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient, Session } from '@supabase/supabase-js';
 import { appConfigValues } from '../config';
 
-export type AdminRole = 'admin' | 'staff';
+export type AdminRole = 'admin';
 
-// Supabase Auth wrapper; admin access needs app_metadata.role of 'admin' or 'staff'.
+// Supabase Auth wrapper; admin access needs app_metadata.role of 'admin'.
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly client: SupabaseClient = createClient(
@@ -34,7 +34,7 @@ export class AuthService {
 
   roleOf(session: Session | null): AdminRole | null {
     const role = session?.user?.app_metadata?.['role'];
-    return role === 'admin' || role === 'staff' ? role : null;
+    return role === 'admin' ? role : null;
   }
 
   async getAccessToken(): Promise<string | null> {

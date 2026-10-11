@@ -1,0 +1,36 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Messaging</h2>
+
+	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
+		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
+		<p class="text-sm">No channels are configured for this domain yet.</p>
+	</div>
+
+	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Subject</th>
+					<th>Domain</th>
+					<th>Throughput (msg/min)</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let channel of channels">
+					<td class="font-mono text-sm">{{ channel.subject }}</td>
+					<td>{{ channel.domain }}</td>
+					<td>{{ channel.throughputPerMin }}</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-success]="channel.status === 'connected'"
+							[class.badge-warning]="channel.status === 'degraded'"
+							[class.badge-error]="channel.status === 'down'"
+						>{{ channel.status }}</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>

@@ -1,0 +1,33 @@
+<section class="w-full space-y-6">
+	<h2 class="text-3xl font-bold domain-heading">Deployments</h2>
+
+	<div class="overflow-x-auto">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Service</th>
+					<th>Version</th>
+					<th>Environment</th>
+					<th>Deployed</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let deployment of deployments">
+					<td>{{ deployment.service }}</td>
+					<td>v{{ deployment.version }}</td>
+					<td class="capitalize">{{ deployment.environment }}</td>
+					<td>{{ deployment.deployedAt | date:'short' }}</td>
+					<td>
+						<span
+							class="badge"
+							[class.badge-success]="deployment.status === 'running'"
+							[class.badge-warning]="deployment.status === 'deploying'"
+							[class.badge-error]="deployment.status === 'failed'"
+						>{{ deployment.status }}</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
