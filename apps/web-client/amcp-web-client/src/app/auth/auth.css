@@ -1,0 +1,236 @@
+.auth-shell {
+	min-height: 100vh;
+	display: grid;
+	justify-items: center;
+	align-content: start;
+	padding: 2rem;
+	padding-top: 8rem;
+	background: linear-gradient(26.5deg, #ffffff 50%, #00571A 50%);
+}
+
+.auth-card {
+	width: min(100%, 700px);
+	background: transparent;
+	border-radius: 1.25rem;
+	box-shadow: none;
+	padding: 1.5rem;
+	margin-top: 5px;
+	min-height: calc(365px + 3rem);
+}
+
+.auth-switch {
+	display: flex;
+	margin-bottom: 1.25rem;
+	padding-top: 8.4rem;
+}
+
+.auth-switch a {
+	position: relative;
+	text-decoration: none;
+	font-weight: 700;
+	padding-bottom: 0.25rem;
+	display: inline-block;
+}
+
+.auth-switch a::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 3px;
+	bottom: -4px;
+	background: #ffffff;
+	transform: scaleX(0);
+	transform-origin: center;
+	transition: transform 0.18s ease;
+}
+
+.auth-switch a.active::after {
+	transform: scaleX(1);
+}
+
+.auth-switch a[routerLink="/auth/login"].active::after {
+	background: linear-gradient(26.5deg, #00571A 69%, #ffffff 72%);
+}
+
+
+.auth-shell a[routerLink] {
+	text-decoration: none;
+	font-weight: 700;
+	padding-bottom: 0.25rem;
+	border-bottom: 2px solid transparent;
+	display: inline-block;
+}
+
+.auth-shell a.active {
+	border-bottom-color: #ffffff;
+}
+
+.auth-form-panel {
+	width: min(100%, 800px);
+	display: grid;
+	gap: 1.25rem;
+	align-items: start;
+	justify-items: center;
+	justify-self: center;
+	color: #000000;
+}
+
+.auth-form-panel--login {
+	min-height: 286px;
+}
+
+.auth-form-panel--signup {
+	min-height: 365px;
+}
+
+.auth-form {
+	position: relative;
+	width: 100%;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.auth-form--login {
+	height: 286px;
+}
+
+.auth-form--signup {
+	height: 365px;
+}
+
+.auth-label {
+	position: absolute;
+	left: 0;
+	color: #000000 !important;
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 1.28px;
+	line-height: 40px;
+}
+
+.auth-label--email {
+	top: 0;
+}
+
+.auth-label--password {
+	top: 76px;
+}
+
+.auth-label--name {
+	top: 0;
+}
+
+.auth-input {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 40px;
+	padding: 24px 0 0;
+	border: none;
+	background: transparent;
+	font-size: 16px;
+	line-height: 40px;
+	letter-spacing: 1.28px;
+	color: #000000 !important;
+	outline: none;
+}
+
+.auth-input--email {
+	top: 0;
+}
+
+.auth-input--password {
+	top: 76px;
+}
+
+.auth-input--name {
+	top: 0;
+}
+
+.auth-input::placeholder {
+	color: #000000 !important;
+	opacity: 1;
+}
+
+.auth-underline {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: #9D9D9D;
+}
+
+.auth-underline--email {
+	top: 47px;
+}
+
+.auth-underline--password {
+	top: 123px;
+}
+
+.auth-form-panel--signup .auth-label--email {
+	top: 76px;
+}
+
+.auth-form-panel--signup .auth-input--email {
+	top: 76px;
+}
+
+.auth-form-panel--signup .auth-underline--email {
+	top: 124px;
+}
+
+.auth-form-panel--signup .auth-label--password {
+	top: 153px;
+}
+
+.auth-form-panel--signup .auth-input--password {
+	top: 153px;
+}
+
+.auth-form-panel--signup .auth-underline--password {
+	top: 200px;
+}
+
+.auth-underline--name {
+	top: 47px;
+}
+
+.auth-submit {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 60px;
+	border-radius: 8px;
+	background: #00571A;
+	color: #ffffff;
+	font-size: 16px;
+	font-weight: 800;
+	letter-spacing: 1.28px;
+	line-height: 40px;
+	cursor: pointer;
+}
+
+.auth-submit--login {
+	top: 167px;
+	border: none;
+	background: linear-gradient(26.5deg, #00571A 91%, #ffffff 64%);
+	color: #ffffff;
+}
+
+.auth-submit--signup {
+	top: 245px;
+	height: 60.5px;
+}
+
+.auth-submit:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.auth-error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0.5rem;
+}

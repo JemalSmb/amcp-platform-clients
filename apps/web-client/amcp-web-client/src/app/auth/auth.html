@@ -1,0 +1,22 @@
+<div class="auth-shell bg-gray-100">
+	<div class="top-0 right-0 absolute">
+		<img src="/Logo.svg" alt="AMCP" class="auth-logo" width="280" height="280" />
+	</div>
+
+	<div>
+		<h1 class="text-7xl font-bold text-center">Welcome</h1>
+	</div>
+
+	<div class="auth-switch flex flex-row items-center justify-center gap-72">
+	<a routerLink="/auth/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="inline-block bg-[linear-gradient(26.5deg,#00571A_35%,#ffffff_37%)] bg-clip-text text-transparent text-4xl font-bold text-center">
+		Login
+	</a>
+	<a routerLink="/auth/signup" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="inline-block text-4xl font-bold text-center">
+		Signup
+	</a>
+	</div>
+
+	<div class="auth-card">
+		<router-outlet></router-outlet>
+	</div>
+</div>

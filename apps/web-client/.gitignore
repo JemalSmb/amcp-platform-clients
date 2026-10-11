@@ -53,3 +53,7 @@ amcp-web-client/.env
 
 amcp-admin-client/.angular/cache/
 amcp-web-client/.angular/cache/
+
+# Generated from .env by scripts/load-env.mjs
+env.generated.ts
+.env

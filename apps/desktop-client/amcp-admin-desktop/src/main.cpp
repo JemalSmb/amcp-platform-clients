@@ -1,4 +1,8 @@
 #include <QApplication>
+#include <QAction>
+#include <QMenuBar>
+#include "login_dialog.h"
+#include "supabase_auth.h"
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QIcon>
@@ -55,8 +59,24 @@ static QToolButton *createNavButton(const QString &text, const QString &iconPath
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     Q_INIT_RESOURCE(resources);
+    QCoreApplication::setOrganizationName("AMCP");
+    QCoreApplication::setApplicationName("amcp-admin-desktop");
+
+    SupabaseAuth auth("amcp/admin/auth");
+    if (!auth.restoreSession()) {
+        LoginDialog login(&auth, "AMCP Admin Desktop", false);
+        if (login.exec() != QDialog::Accepted) {
+            return 0;
+        }
+    }
 
     QMainWindow window;
+    auto *accountMenu = window.menuBar()->addMenu("Account");
+    accountMenu->addAction(auth.email().isEmpty() ? "Signed in" : "Signed in as " + auth.email())->setEnabled(false);
+    accountMenu->addAction("Log out", [&auth, &app]() {
+        auth.logout();
+        app.quit();
+    });
     window.setWindowTitle("AMCP Admin Desktop");
     window.resize(1280, 800);
 
