@@ -4,6 +4,8 @@ add_executable(${APP_NAME}
   src/main.cpp
   ../common/supabase_auth.cpp
   ../common/login_dialog.cpp
+  ../common/api_client.cpp
+  ../common/data_page.cpp
   resources.qrc
 )
 
