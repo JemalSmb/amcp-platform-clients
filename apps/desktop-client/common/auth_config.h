@@ -37,3 +37,15 @@ inline QString envValue(const QString &key) {
 
 inline QString supabaseUrl() { return envValue("SUPABASE_URL"); }
 inline QString supabaseAnonKey() { return envValue("SUPABASE_ANON_KEY"); }
+
+inline QString apiBaseUrl() { return envValue("API_BASE_URL"); }
+inline QString gatewayBaseUrl() {
+    const QString v = envValue("GATEWAY_BASE_URL");
+    return v.isEmpty() ? apiBaseUrl() : v;
+}
+inline bool envFlag(const QString &key, bool fallback) {
+    const QString v = envValue(key).toLower();
+    return v.isEmpty() ? fallback : (v == "1" || v == "true" || v == "yes");
+}
+inline bool useMockData() { return envFlag("USE_MOCK_DATA", false); }
+inline bool useGatewayData() { return envFlag("USE_GATEWAY_DATA", true); }
