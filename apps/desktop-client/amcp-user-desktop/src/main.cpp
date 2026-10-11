@@ -213,7 +213,7 @@ int main(int argc, char *argv[]) {
             {"cybersecurity", "1842", "6"},
             {"finance", "934", "2"},
             {"manufacturing", "411", "3"},
-            {"healthcare", "0", "0"},
+            {"agriculture", "0", "0"},
         }));
 
     stackedWidget->addWidget(createDataPage(&api, specs::alerts(),
