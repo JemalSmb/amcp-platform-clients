@@ -21,7 +21,7 @@
 .auth-switch {
 	display: flex;
 	margin-bottom: 1.25rem;
-  padding-top: 8.4rem;
+	padding-top: 15rem;
 }
 
 .auth-switch a {
@@ -215,7 +215,7 @@
 .auth-submit--login {
   top: 167px;
   border: none;
-  background: linear-gradient(26.5deg, #00571A 91%, #ffffff 64%);
+  background: #00571A;
   color: #ffffff;
 }
 
