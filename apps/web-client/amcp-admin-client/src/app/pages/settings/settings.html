@@ -1,34 +1,83 @@
-<section class="w-full max-w-md space-y-6" *ngIf="settings">
-	<h2 class="text-3xl font-bold domain-heading">System Settings</h2>
+<section class="w-full max-w-3xl space-y-6">
+	<div>
+		<h2 class="text-3xl font-bold domain-heading">System Settings</h2>
+		<p class="mt-2 text-sm text-base-content/70">Platform-wide configuration and how this console looks.</p>
+	</div>
+
+	<p class="text-sm text-error" role="alert" *ngIf="error && !settings">{{ error }}</p>
 
 	<div class="card bg-base-200">
-		<div class="card-body space-y-4">
-			<label class="form-control">
-				<span class="label-text">Platform name</span>
-				<input class="input input-bordered" [(ngModel)]="settings.platformName" />
-			</label>
-
-			<label class="form-control">
-				<span class="label-text">Default alert severity</span>
-				<select class="select select-bordered" [(ngModel)]="settings.defaultAlertSeverity">
-					<option *ngFor="let severity of severities" [value]="severity">{{ severity }}</option>
-				</select>
-			</label>
-
-			<label class="form-control">
-				<span class="label-text">Data retention (days)</span>
-				<input class="input input-bordered" type="number" [(ngModel)]="settings.dataRetentionDays" />
-			</label>
-
-			<label class="label cursor-pointer justify-start gap-3">
-				<input type="checkbox" class="checkbox" [(ngModel)]="settings.maintenanceMode" />
-				<span class="label-text">Maintenance mode</span>
-			</label>
-
-			<div class="flex items-center gap-3">
-				<button class="btn btn-primary" (click)="save()">Save settings</button>
-				<span class="text-sm text-success" *ngIf="saved">Saved</span>
-			</div>
+		<div class="card-body gap-4">
+			<h3 class="card-title text-lg">Appearance</h3>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Theme</legend>
+				<div class="join" role="radiogroup" aria-label="Theme">
+					<button
+						type="button"
+						*ngFor="let option of themes"
+						class="btn join-item"
+						[class.btn-primary]="themeMode === option.value"
+						[attr.aria-pressed]="themeMode === option.value"
+						(click)="setTheme(option.value)"
+					>{{ option.label }}</button>
+				</div>
+				<p class="label whitespace-normal">System follows your device's light or dark setting. Applies right away on this device.</p>
+			</fieldset>
 		</div>
 	</div>
+
+	<ng-container *ngIf="settings">
+		<div class="card bg-base-200">
+			<div class="card-body gap-4">
+				<h3 class="card-title text-lg">Platform</h3>
+
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Platform name</legend>
+					<input class="input w-full" [class.input-error]="nameMissing" [(ngModel)]="settings.platformName" (ngModelChange)="touch()" />
+					<p class="label text-error whitespace-normal" *ngIf="nameMissing">Platform name can't be empty.</p>
+				</fieldset>
+
+				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+					<fieldset class="fieldset">
+						<legend class="fieldset-legend">Default alert severity</legend>
+						<select class="select w-full" [(ngModel)]="settings.defaultAlertSeverity" (ngModelChange)="touch()">
+							<option *ngFor="let severity of severities" [value]="severity.value">{{ severity.label }}</option>
+						</select>
+						<p class="label whitespace-normal">Used for new alert rules that don't set their own.</p>
+					</fieldset>
+
+					<fieldset class="fieldset">
+						<legend class="fieldset-legend">Data retention (days)</legend>
+						<input class="input w-full" [class.input-error]="retentionInvalid" type="number" min="1" max="3650" [(ngModel)]="settings.dataRetentionDays" (ngModelChange)="touch()" />
+						<p class="label whitespace-normal" [class.text-error]="retentionInvalid">Enter a whole number from 1 to 3650.</p>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+
+		<div class="card bg-base-200">
+			<div class="card-body gap-3">
+				<h3 class="card-title text-lg">Maintenance</h3>
+				<label class="label cursor-pointer justify-between gap-4 text-base-content">
+					<span>
+						<span class="block font-medium">Maintenance mode</span>
+						<span class="block text-xs text-base-content/60">Tells users the platform is under maintenance.</span>
+					</span>
+					<input type="checkbox" class="toggle toggle-primary" [(ngModel)]="settings.maintenanceMode" (ngModelChange)="touch()" />
+				</label>
+				<div role="alert" class="alert alert-warning alert-soft text-sm" *ngIf="settings.maintenanceMode">
+					Maintenance mode is on. Remember to save, and switch it off when you are done.
+				</div>
+			</div>
+		</div>
+
+		<div class="flex flex-wrap items-center gap-3">
+			<button class="btn btn-primary" (click)="save()" [disabled]="saving || invalid">
+				<span class="loading loading-spinner loading-xs" *ngIf="saving"></span>
+				Save settings
+			</button>
+			<span class="text-sm text-success" role="status" *ngIf="saved">Settings saved</span>
+			<span class="text-sm text-error" role="alert" *ngIf="error">{{ error }}</span>
+		</div>
+	</ng-container>
 </section>

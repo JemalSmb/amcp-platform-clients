@@ -5,10 +5,10 @@
 	</div>
 
 	<form *ngIf="showForm" class="card bg-base-200 p-4 space-y-3 max-w-md" (ngSubmit)="createUser()" #userForm="ngForm">
-		<input class="input input-bordered w-full" name="name" placeholder="Full name" required [(ngModel)]="form.name" />
-		<input class="input input-bordered w-full" name="email" type="email" placeholder="Email" required [(ngModel)]="form.email" />
-		<input class="input input-bordered w-full" name="password" type="password" placeholder="Temporary password (min 8)" minlength="8" required [(ngModel)]="form.password" />
-		<select class="select select-bordered w-full capitalize" name="role" [(ngModel)]="form.role">
+		<input class="input w-full" name="name" placeholder="Full name" required [(ngModel)]="form.name" />
+		<input class="input w-full" name="email" type="email" placeholder="Email" required [(ngModel)]="form.email" />
+		<input class="input w-full" name="password" type="password" placeholder="Temporary password (min 8)" minlength="8" required [(ngModel)]="form.password" />
+		<select class="select w-full capitalize" name="role" [(ngModel)]="form.role">
 			<option *ngFor="let r of roles" [value]="r">{{ r }}</option>
 		</select>
 		<p *ngIf="error" class="text-error text-sm" role="alert">{{ error }}</p>
