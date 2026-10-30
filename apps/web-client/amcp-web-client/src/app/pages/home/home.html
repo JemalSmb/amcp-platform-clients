@@ -33,7 +33,7 @@
 					<li *ngFor="let model of models" class="flex items-center justify-between py-2">
 						<div>
 							<p class="font-medium">{{ model.name }}</p>
-							<p class="text-xs text-gray-500">{{ model.domain }} · v{{ model.version }}</p>
+							<p class="text-xs text-base-content/60">{{ model.domain }} · v{{ model.version }}</p>
 						</div>
 						<span
 							class="badge"
@@ -60,7 +60,7 @@
 								[class.badge-ghost]="alert.severity === 'low'"
 							>{{ alert.severity }}</span>
 						</div>
-						<p class="text-xs text-gray-500">{{ alert.domain }} · {{ alert.createdAt | date:'short' }}</p>
+						<p class="text-xs text-base-content/60">{{ alert.domain }} · {{ alert.createdAt | date:'short' }}</p>
 					</li>
 				</ul>
 			</div>

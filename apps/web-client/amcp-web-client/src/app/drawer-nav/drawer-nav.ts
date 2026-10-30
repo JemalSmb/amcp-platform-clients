@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
+import { ThemeService } from '../core/services/theme.service';
 import { DomainSwitcher } from '../core/domain-switcher/domain-switcher';
 
 @Component({
@@ -14,6 +15,7 @@ import { DomainSwitcher } from '../core/domain-switcher/domain-switcher';
 export class DrawerNav {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  protected readonly theme = inject(ThemeService);
 
   protected async logout(): Promise<void> {
     await this.auth.logout();

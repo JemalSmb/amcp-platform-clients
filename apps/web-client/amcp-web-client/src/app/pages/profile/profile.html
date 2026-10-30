@@ -1,24 +1,58 @@
-<section class="w-full max-w-md space-y-6" *ngIf="profile">
-	<h2 class="text-3xl font-bold domain-heading">Profile</h2>
+<section class="w-full max-w-3xl space-y-6" *ngIf="profile">
+	<div>
+		<h2 class="text-3xl font-bold domain-heading">Profile</h2>
+		<p class="mt-2 text-sm text-base-content/70">Your account details and regional preferences.</p>
+	</div>
 
 	<div class="card bg-base-200">
-		<div class="card-body space-y-3">
-			<label class="form-control">
-				<span class="label-text">Name</span>
-				<input class="input input-bordered" [(ngModel)]="profile.name" />
-			</label>
-			<label class="form-control">
-				<span class="label-text">Email</span>
-				<input class="input input-bordered" [(ngModel)]="profile.email" />
-			</label>
-			<label class="form-control">
-				<span class="label-text">Role</span>
-				<input class="input input-bordered" [(ngModel)]="profile.role" disabled />
-			</label>
-			<label class="form-control">
-				<span class="label-text">Timezone</span>
-				<input class="input input-bordered" [(ngModel)]="profile.timezone" />
-			</label>
+		<div class="card-body gap-4">
+			<div class="flex items-center gap-4">
+				<div class="avatar avatar-placeholder">
+					<div class="w-14 rounded-full bg-primary text-primary-content">
+						<span class="text-lg font-semibold">{{ initials }}</span>
+					</div>
+				</div>
+				<div>
+					<p class="text-lg font-semibold">{{ profile.name || 'Unnamed user' }}</p>
+					<span class="badge badge-ghost">{{ profile.role }}</span>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Name</legend>
+					<input class="input w-full" [class.input-error]="nameMissing" autocomplete="name" [(ngModel)]="profile.name" (ngModelChange)="touch()" />
+					<p class="label text-error whitespace-normal" *ngIf="nameMissing">Name can't be empty.</p>
+				</fieldset>
+
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Timezone</legend>
+					<select class="select w-full" [(ngModel)]="profile.timezone" (ngModelChange)="touch()">
+						<option *ngFor="let zone of timezones" [value]="zone">{{ zone }}</option>
+					</select>
+				</fieldset>
+
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Login email</legend>
+					<input class="input w-full" [value]="profile.email" disabled />
+					<p class="label whitespace-normal">Your sign-in address. To get alerts somewhere else, set a notification email in Settings.</p>
+				</fieldset>
+
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Role</legend>
+					<input class="input w-full" [value]="profile.role" disabled />
+					<p class="label whitespace-normal">Assigned by an administrator.</p>
+				</fieldset>
+			</div>
 		</div>
+	</div>
+
+	<div class="flex flex-wrap items-center gap-3">
+		<button class="btn btn-primary" (click)="save()" [disabled]="saving || nameMissing">
+			<span class="loading loading-spinner loading-xs" *ngIf="saving"></span>
+			Save profile
+		</button>
+		<span class="text-sm text-success" role="status" *ngIf="saved">Profile saved</span>
+		<span class="text-sm text-error" role="alert" *ngIf="error">{{ error }}</span>
 	</div>
 </section>

@@ -8,12 +8,12 @@
 
 	<div class="card bg-base-200" *ngIf="!domainService.currentMeta().comingSoon">
 		<div class="card-body flex-row flex-wrap items-end gap-4">
-			<label class="form-control w-full max-w-xs">
-				<span class="label-text">Model</span>
-				<select class="select select-bordered" [(ngModel)]="selectedModelId">
+			<fieldset class="fieldset w-full max-w-xs">
+				<legend class="fieldset-legend">Model</legend>
+				<select class="select w-full" [(ngModel)]="selectedModelId">
 					<option *ngFor="let model of models" [value]="model.id">{{ model.name }}</option>
 				</select>
-			</label>
+			</fieldset>
 			<button class="btn btn-primary" [disabled]="running" (click)="runPrediction()">
 				<span *ngIf="running" class="loading loading-spinner loading-sm"></span>
 				Run prediction
