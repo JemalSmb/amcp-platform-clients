@@ -1,6 +1,7 @@
 set(APP_NAME amcp_user_desktop)
 
-add_executable(${APP_NAME}
+# WIN32: no console window on Windows. MACOSX_BUNDLE: build a .app on macOS. Both are ignored on Linux.
+add_executable(${APP_NAME} WIN32 MACOSX_BUNDLE
   src/main.cpp
   ../common/supabase_auth.cpp
   ../common/login_dialog.cpp
