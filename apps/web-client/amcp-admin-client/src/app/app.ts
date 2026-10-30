@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ThemeService } from './core/services/theme.service';
 import { ModelUpdateToast } from './core/model-update-toast/model-update-toast';
 
 @Component({
@@ -10,5 +11,9 @@ import { ModelUpdateToast } from './core/model-update-toast/model-update-toast';
   imports: [RouterOutlet, ModelUpdateToast],
 })
 
-export class App {}
+export class App {
+  constructor() {
+    inject(ThemeService); // applies the saved theme as soon as the app starts
+  }
+}
 

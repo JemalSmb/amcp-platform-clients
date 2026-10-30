@@ -102,3 +102,12 @@
 .drawer-shell .drawer-side .divider {
 	margin-block: 0.25rem;
 }
+
+/* Buttons on the coloured sidebar (theme toggle, logout) must stay white in every theme. */
+.drawer-shell .drawer-side .btn-ghost {
+	color: #ffffff;
+}
+
+.drawer-shell .drawer-side .btn-ghost:hover {
+	background: rgba(255, 255, 255, 0.15);
+}

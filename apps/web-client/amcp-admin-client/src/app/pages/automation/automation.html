@@ -23,7 +23,7 @@
 				<tr *ngFor="let playbook of playbooks">
 					<td>{{ playbook.name }}</td>
 					<td>{{ playbook.domain }}</td>
-					<td class="text-xs text-gray-500">{{ playbook.trigger }}</td>
+					<td class="text-xs text-base-content/60">{{ playbook.trigger }}</td>
 					<td>{{ playbook.runCount }}</td>
 					<td>{{ playbook.lastRunAt | date:'short' }}</td>
 					<td>

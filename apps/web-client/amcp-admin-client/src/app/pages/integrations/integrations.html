@@ -13,8 +13,8 @@
 						[class.badge-ghost]="integration.status === 'disconnected'"
 					>{{ integration.status }}</span>
 				</div>
-				<p class="text-xs text-gray-500">{{ integration.type }}</p>
-				<p class="text-xs text-gray-500">Last sync {{ integration.lastSyncAt | date:'short' }}</p>
+				<p class="text-xs text-base-content/60">{{ integration.type }}</p>
+				<p class="text-xs text-base-content/60">Last sync {{ integration.lastSyncAt | date:'short' }}</p>
 			</div>
 		</div>
 	</div>

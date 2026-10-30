@@ -1,7 +1,7 @@
 .drawer-shell {
 	min-height: 100vh;
 	width: 100vw;
-	background: #ffffff;
+	background: var(--color-base-100);
 }
 
 .drawer-shell .drawer-content {
@@ -13,11 +13,15 @@
 
 .drawer-shell .drawer-content > .p-4 {
 	flex: 1 1 auto;
-	padding-left: 16rem;
-	background: #ffffff;
+	/* Drawer closed = 3.5rem icon rail, open = 16rem; content follows it. */
+	padding-left: calc(3.5rem + 1.5rem);
+	transition: padding-left 0.2s ease;
+	background: var(--color-base-100);
 }
 
 .drawer-shell .drawer-side {
+	/* Nav is taller than short screens: let it scroll, with the green filling the whole column. */
+	overflow-y: auto;
 	padding-top: 0;
 	position: fixed;
 	top: 0;
@@ -28,7 +32,8 @@
 
 .drawer-shell .drawer-side > div {
 	background: var(--domain-color, #00571A);
-	height: 100%;
+	min-height: 100%;
+	transition: width 0.2s ease;
 }
 
 .drawer-shell .drawer-toggle-row {
@@ -57,20 +62,49 @@
 }
 
 .drawer-shell .menu a {
-	font-size: 1.4rem !important;
+	font-size: 1.05rem !important;
 }
 
 .drawer-shell .menu a span {
-	font-size: 1.4rem !important;
+	font-size: 1.05rem !important;
 }
 
 .drawer-shell .menu img {
-	width: 32px !important;
-	height: 32px !important;
+	width: 24px !important;
+	height: 24px !important;
 	flex-shrink: 0;
 }
 
 .drawer-shell .menu a.domain-active-link {
 	background: color-mix(in srgb, var(--domain-color, #00571A) 35%, transparent);
 	border-left: 3px solid var(--domain-color, #00571A);
+}
+
+.drawer-shell:has(> .drawer-toggle:checked) .drawer-content > .p-4 {
+	padding-left: calc(16rem + 1.5rem);
+}
+
+/* Compact rows so the whole nav fits on a 720px-high laptop screen. */
+.drawer-shell .menu a {
+	padding-block: 0.3rem;
+}
+
+.drawer-shell .drawer-side .divider {
+	margin-block: 0.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.drawer-shell .drawer-content > .p-4,
+	.drawer-shell .drawer-side > div {
+		transition: none;
+	}
+}
+
+/* Buttons on the coloured sidebar (theme toggle, logout) must stay white in every theme. */
+.drawer-shell .drawer-side .btn-ghost {
+	color: #ffffff;
+}
+
+.drawer-shell .drawer-side .btn-ghost:hover {
+	background: rgba(255, 255, 255, 0.15);
 }

@@ -35,7 +35,7 @@
 					<li *ngFor="let domain of domains" class="flex items-center justify-between py-2">
 						<div>
 							<p class="font-medium capitalize">{{ domain.name }}</p>
-							<p class="text-xs text-gray-500">{{ domain.modelCount }} models</p>
+							<p class="text-xs text-base-content/60">{{ domain.modelCount }} models</p>
 						</div>
 						<span
 							class="badge"
@@ -55,7 +55,7 @@
 					<li *ngFor="let model of models" class="flex items-center justify-between py-2">
 						<div>
 							<p class="font-medium">{{ model.name }}</p>
-							<p class="text-xs text-gray-500">{{ model.domain }} · v{{ model.version }}</p>
+							<p class="text-xs text-base-content/60">{{ model.domain }} · v{{ model.version }}</p>
 						</div>
 						<span
 							class="badge"

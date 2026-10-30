@@ -1,38 +1,97 @@
 <section class="w-full space-y-6">
-	<h2 class="text-3xl font-bold domain-heading">Policies</h2>
+	<div class="flex flex-wrap items-center justify-between gap-3">
+		<h2 class="text-3xl font-bold domain-heading">Policies</h2>
+		<button
+			type="button"
+			class="btn btn-primary btn-sm"
+			*ngIf="!domainService.currentMeta().comingSoon"
+			(click)="adding = !adding"
+			[attr.aria-expanded]="adding"
+		>{{ adding ? 'Cancel' : 'Add policy' }}</button>
+	</div>
 
 	<div class="domain-coming-soon" *ngIf="domainService.currentMeta().comingSoon">
 		<p class="text-lg font-semibold">{{ domainService.currentMeta().label }} is coming soon</p>
 		<p class="text-sm">No policies are configured for this domain yet.</p>
 	</div>
 
-	<div class="overflow-x-auto" *ngIf="!domainService.currentMeta().comingSoon">
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Domain</th>
-					<th>Type</th>
-					<th>Enforcement</th>
-					<th>Updated</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let policy of policies">
-					<td>{{ policy.name }}</td>
-					<td>{{ policy.domain }}</td>
-					<td>{{ policy.type }}</td>
-					<td>
-						<span
-							class="badge"
-							[class.badge-success]="policy.enforcement === 'enforced'"
-							[class.badge-warning]="policy.enforcement === 'monitor'"
-							[class.badge-ghost]="policy.enforcement === 'disabled'"
-						>{{ policy.enforcement }}</span>
-					</td>
-					<td>{{ policy.updatedAt | date:'short' }}</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+	<ng-container *ngIf="!domainService.currentMeta().comingSoon">
+		<p class="text-sm text-success" role="status" *ngIf="message">{{ message }}</p>
+		<p class="text-sm text-error" role="alert" *ngIf="error">{{ error }}</p>
+
+		<form class="card bg-base-200" *ngIf="adding" (ngSubmit)="add()" #policyForm="ngForm">
+			<div class="card-body gap-4">
+				<h3 class="card-title text-lg">New {{ domainService.currentMeta().label }} policy</h3>
+				<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+					<fieldset class="fieldset sm:col-span-1">
+						<legend class="fieldset-legend">Name</legend>
+						<input class="input w-full" name="name" maxlength="120" required [(ngModel)]="form.name" />
+					</fieldset>
+					<fieldset class="fieldset">
+						<legend class="fieldset-legend">Type</legend>
+						<input class="input w-full" name="type" maxlength="60" required [(ngModel)]="form.type" placeholder="response, escalation, ..." />
+					</fieldset>
+					<fieldset class="fieldset">
+						<legend class="fieldset-legend">Enforcement</legend>
+						<select class="select w-full" name="enforcement" [(ngModel)]="form.enforcement">
+							<option *ngFor="let mode of modes" [value]="mode">{{ mode }}</option>
+						</select>
+					</fieldset>
+				</div>
+				<div>
+					<button class="btn btn-primary" type="submit" [disabled]="formInvalid || busyId === 'new'">
+						<span class="loading loading-spinner loading-xs" *ngIf="busyId === 'new'"></span>
+						Create policy
+					</button>
+				</div>
+			</div>
+		</form>
+
+		<div class="overflow-x-auto">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Domain</th>
+						<th>Type</th>
+						<th>Enforcement</th>
+						<th>Updated</th>
+						<th><span class="sr-only">Actions</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let policy of policies">
+						<td>{{ policy.name }}</td>
+						<td>{{ policy.domain }}</td>
+						<td>{{ policy.type }}</td>
+						<td>
+							<select
+								class="select select-sm w-36"
+								[attr.aria-label]="'Enforcement for ' + policy.name"
+								[ngModel]="policy.enforcement"
+								(ngModelChange)="setEnforcement(policy, $event)"
+								[disabled]="busyId === policy.id"
+							>
+								<option *ngFor="let mode of modes" [value]="mode">{{ mode }}</option>
+							</select>
+						</td>
+						<td>{{ policy.updatedAt | date:'short' }}</td>
+						<td class="text-right">
+							<button
+								type="button"
+								class="btn btn-ghost btn-sm"
+								[class.text-error]="confirmDeleteId === policy.id"
+								[disabled]="busyId === policy.id"
+								(click)="remove(policy)"
+								(blur)="confirmDeleteId = null"
+							>{{ confirmDeleteId === policy.id ? 'Confirm delete' : 'Delete' }}</button>
+						</td>
+					</tr>
+					<tr *ngIf="policies.length === 0">
+						<td colspan="6" class="text-center text-base-content/60">No policies for this domain yet.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</ng-container>
 </section>

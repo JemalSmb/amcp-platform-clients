@@ -1,9 +1,15 @@
 <section class="w-full space-y-6">
-	<h2 class="text-3xl font-bold domain-heading">Domains</h2>
+	<div>
+		<h2 class="text-3xl font-bold domain-heading">Domains</h2>
+		<p class="mt-2 text-sm text-base-content/70">Turn a domain on or off for the admin console and edit its description.</p>
+	</div>
+
+	<p class="text-sm text-success" role="status" *ngIf="message">{{ message }}</p>
+	<p class="text-sm text-error" role="alert" *ngIf="error">{{ error }}</p>
 
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 		<div class="card bg-base-200" *ngFor="let domain of domains">
-			<div class="card-body">
+			<div class="card-body gap-3">
 				<div class="flex items-center justify-between">
 					<h3 class="card-title capitalize">{{ domain.name }}</h3>
 					<span
@@ -13,8 +19,24 @@
 						[class.badge-warning]="domain.state === 'inactive'"
 					>{{ domain.state }}</span>
 				</div>
-				<p class="text-sm text-gray-500">{{ domain.description }}</p>
-				<p class="text-xs text-gray-500">{{ domain.modelCount }} models registered</p>
+				<p class="text-xs text-base-content/60">{{ domain.modelCount }} models registered</p>
+
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">State</legend>
+					<select class="select select-sm w-full" [attr.aria-label]="'State of ' + domain.name" [(ngModel)]="domain.draftState">
+						<option *ngFor="let state of states" [value]="state">{{ state }}</option>
+					</select>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Description</legend>
+					<textarea class="textarea w-full" rows="2" maxlength="300" [attr.aria-label]="'Description of ' + domain.name" [(ngModel)]="domain.draftDescription"></textarea>
+				</fieldset>
+				<div class="card-actions justify-end">
+					<button class="btn btn-primary btn-sm" (click)="save(domain)" [disabled]="!dirty(domain) || savingId === domain.id">
+						<span class="loading loading-spinner loading-xs" *ngIf="savingId === domain.id"></span>
+						Save
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
