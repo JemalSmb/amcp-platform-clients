@@ -40,12 +40,12 @@
 
 			<div class="w-full px-2 py-2">
 
-			  <button type="button" class="btn btn-ghost w-full justify-start is-drawer-close:tooltip is-drawer-close:tooltip-right" [attr.data-tip]="theme.resolved() === 'dark' ? 'Light mode' : 'Dark mode'" (click)="theme.toggle()" [attr.aria-label]="'Switch to ' + (theme.resolved() === 'dark' ? 'light' : 'dark') + ' theme'">
+			  <button type="button" class="btn btn-ghost btn-sm w-full justify-start is-drawer-close:tooltip is-drawer-close:tooltip-right" [attr.data-tip]="theme.resolved() === 'dark' ? 'Light mode' : 'Dark mode'" (click)="theme.toggle()" [attr.aria-label]="'Switch to ' + (theme.resolved() === 'dark' ? 'light' : 'dark') + ' theme'">
 			    <span aria-hidden="true">{{ theme.resolved() === 'dark' ? '☀' : '☾' }}</span>
 			    <span class="is-drawer-close:hidden">{{ theme.resolved() === 'dark' ? 'Light mode' : 'Dark mode' }}</span>
 			  </button>
 
-			  <button type="button" class="btn btn-ghost w-full justify-start is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Logout" (click)="logout()">
+			  <button type="button" class="btn btn-ghost btn-sm w-full justify-start is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Logout" (click)="logout()">
 
 			    <span class="is-drawer-close:hidden">Logout</span>
 

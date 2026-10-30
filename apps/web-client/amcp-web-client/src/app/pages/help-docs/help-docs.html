@@ -4,16 +4,6 @@
 
 	<p class="text-sm text-error" *ngIf="error">{{ error }}</p>
 
-	<div class="card bg-base-100 border" *ngIf="openDoc">
-		<div class="card-body">
-			<div class="flex items-center justify-between">
-				<h3 class="card-title">{{ openDoc.title }}</h3>
-				<button class="btn btn-sm btn-ghost" (click)="close()">Close</button>
-			</div>
-			<pre class="whitespace-pre-wrap text-sm">{{ openDoc.content }}</pre>
-		</div>
-	</div>
-
 	<div class="space-y-4">
 		<div class="card bg-base-200" *ngFor="let doc of docs">
 			<div class="card-body">
@@ -24,8 +14,14 @@
 				<h3 class="card-title text-lg">{{ doc.title }}</h3>
 				<p class="text-sm text-base-content/60">{{ doc.summary }}</p>
 				<div class="card-actions justify-end">
-					<button class="btn btn-sm btn-primary" (click)="open(doc)" [disabled]="loadingId === doc.id">Open doc</button>
+					<button class="btn btn-sm btn-primary" (click)="toggle(doc)" [disabled]="loadingId === doc.id" [attr.aria-expanded]="openDoc?.id === doc.id">
+						<span class="loading loading-spinner loading-xs" *ngIf="loadingId === doc.id"></span>
+						{{ openDoc?.id === doc.id ? 'Close doc' : 'Open doc' }}
+					</button>
 				</div>
+				<article class="mt-2 rounded-box bg-base-100 p-4" *ngIf="openDoc?.id === doc.id">
+					<pre class="whitespace-pre-wrap text-sm">{{ openDoc?.content }}</pre>
+				</article>
 			</div>
 		</div>
 	</div>
