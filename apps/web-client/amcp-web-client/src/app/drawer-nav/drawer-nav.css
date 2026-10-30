@@ -35,6 +35,8 @@
 }
 
 .drawer-shell .drawer-side {
+	/* Nav is taller than short screens: let it scroll, with the green filling the whole column. */
+	overflow-y: auto;
 	padding-top: 0;
 	position: fixed;
 	top: 0;
@@ -45,7 +47,7 @@
 
 .drawer-shell .drawer-side > div {
 	background: var(--domain-color, #00571A);
-	height: 100%;
+	min-height: 100%;
 }
 
 .drawer-shell .drawer-toggle-row {
@@ -74,20 +76,29 @@
 }
 
 .drawer-shell .menu a {
-	font-size: 1.4rem !important;
+	font-size: 1.05rem !important;
 }
 
 .drawer-shell .menu a span {
-	font-size: 1.4rem !important;
+	font-size: 1.05rem !important;
 }
 
 .drawer-shell .menu img {
-	width: 32px !important;
-	height: 32px !important;
+	width: 24px !important;
+	height: 24px !important;
 	flex-shrink: 0;
 }
 
 .drawer-shell .menu a.domain-active-link {
 	background: color-mix(in srgb, var(--domain-color, #00571A) 35%, transparent);
 	border-left: 3px solid var(--domain-color, #00571A);
+}
+
+/* Compact rows so the whole nav fits on a 720px-high laptop screen. */
+.drawer-shell .menu a {
+	padding-block: 0.3rem;
+}
+
+.drawer-shell .drawer-side .divider {
+	margin-block: 0.25rem;
 }

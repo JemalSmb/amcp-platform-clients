@@ -42,7 +42,8 @@
 				<legend class="fieldset-legend">Notification email</legend>
 				<input
 					class="input w-full"
-					[class.input-error]="emailInvalid || emailMissing"
+					[class.input-error]="emailInvalid"
+					[class.input-warning]="!emailInvalid && emailMissing"
 					type="email"
 					autocomplete="email"
 					placeholder="you@example.com"

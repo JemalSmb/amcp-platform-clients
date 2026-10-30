@@ -22,6 +22,14 @@ export class HelpDocs {
     this.api.getHelpDocs().subscribe((docs) => (this.docs = docs));
   }
 
+  toggle(doc: HelpDoc): void {
+    if (this.openDoc?.id === doc.id) {
+      this.close();
+      return;
+    }
+    this.open(doc);
+  }
+
   open(doc: HelpDoc): void {
     this.error = '';
     this.loadingId = doc.id;
@@ -29,6 +37,8 @@ export class HelpDocs {
       next: (full) => {
         this.openDoc = full;
         this.loadingId = null;
+        // The content renders inside the clicked card; bring it into view.
+        setTimeout(() => document.querySelector('article')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
       },
       error: () => {
         this.error = `Could not load "${doc.title}".`;
