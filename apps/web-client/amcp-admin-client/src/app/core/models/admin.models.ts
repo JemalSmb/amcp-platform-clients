@@ -10,6 +10,18 @@ export interface DomainConfig {
   description: string;
 }
 
+export interface PolicyInput {
+  name: string;
+  domain: PlatformDomain;
+  type: string;
+  enforcement: EnforcementMode;
+}
+
+export interface DomainUpdate {
+  state: DomainState;
+  description?: string;
+}
+
 export type ModelStatus = 'healthy' | 'degraded' | 'offline';
 
 export interface ModelRegistryEntry {

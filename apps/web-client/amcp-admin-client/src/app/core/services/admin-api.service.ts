@@ -10,11 +10,13 @@ import {
   DataSource,
   Deployment,
   DomainConfig,
+  DomainUpdate,
   Integration,
   MessagingChannel,
   ModelRegistryEntry,
   ObservabilityMetric,
   Policy,
+  PolicyInput,
   SecurityEvent,
   SystemSettings, CreateUserRequest } from '../models/admin.models';
 import {
@@ -57,7 +59,7 @@ export class AdminApiService {
   }
 
   getDomains(): Observable<DomainConfig[]> {
-    if (this.useMock) return of(MOCK_DOMAINS).pipe(delay(MOCK_LATENCY_MS));
+    if (this.useMock) return of(MOCK_DOMAINS.map((d) => ({ ...d }))).pipe(delay(MOCK_LATENCY_MS));
     return this.http.get<DomainConfig[]>(`${this.baseUrl}/domains`);
   }
 
@@ -67,8 +69,47 @@ export class AdminApiService {
   }
 
   getPolicies(): Observable<Policy[]> {
-    if (this.useMock) return of(MOCK_POLICIES).pipe(delay(MOCK_LATENCY_MS));
+    if (this.useMock) return of([...MOCK_POLICIES]).pipe(delay(MOCK_LATENCY_MS));
     return this.http.get<Policy[]>(`${this.baseUrl}/policies`);
+  }
+
+  createPolicy(input: PolicyInput): Observable<Policy> {
+    if (this.useMock) {
+      const policy: Policy = { id: `pol-${Date.now()}`, ...input, updatedAt: new Date().toISOString() };
+      MOCK_POLICIES.push(policy);
+      return of(policy).pipe(delay(MOCK_LATENCY_MS));
+    }
+    return this.http.post<Policy>(`${this.baseUrl}/policies`, input);
+  }
+
+  updatePolicy(id: string, input: PolicyInput): Observable<Policy> {
+    if (this.useMock) {
+      const policy = MOCK_POLICIES.find((p) => p.id === id);
+      if (policy) Object.assign(policy, input, { updatedAt: new Date().toISOString() });
+      return of(policy ?? MOCK_POLICIES[0]).pipe(delay(MOCK_LATENCY_MS));
+    }
+    return this.http.put<Policy>(`${this.baseUrl}/policies/${id}`, input);
+  }
+
+  deletePolicy(id: string): Observable<void> {
+    if (this.useMock) {
+      const index = MOCK_POLICIES.findIndex((p) => p.id === id);
+      if (index >= 0) MOCK_POLICIES.splice(index, 1);
+      return of(undefined).pipe(delay(MOCK_LATENCY_MS));
+    }
+    return this.http.delete<void>(`${this.baseUrl}/policies/${id}`);
+  }
+
+  updateDomain(id: string, update: DomainUpdate): Observable<DomainConfig> {
+    if (this.useMock) {
+      const domain = MOCK_DOMAINS.find((d) => d.id === id);
+      if (domain) {
+        domain.state = update.state;
+        if (update.description !== undefined) domain.description = update.description;
+      }
+      return of(domain ?? MOCK_DOMAINS[0]).pipe(delay(MOCK_LATENCY_MS));
+    }
+    return this.http.put<DomainConfig>(`${this.baseUrl}/domains/${id}`, update);
   }
 
   getChannels(): Observable<MessagingChannel[]> {
