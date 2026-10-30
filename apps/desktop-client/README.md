@@ -34,6 +34,21 @@ Each package ships a `.env` with only public values (API URL, Supabase URL, anon
 Never put the Supabase service role key in a desktop app. Build the Linux package locally with
 `packaging/package-linux.sh <build-dir> <out-dir>`.
 
+### Build the Windows .exe from Linux (no Windows machine needed)
+
+Uses Docker with a MinGW-w64 cross-compiler and Qt's prebuilt Windows libraries (a one-time ~1 GB image):
+
+```bash
+docker build -t amcp-winbuild -f apps/desktop-client/packaging/Dockerfile.windows-cross apps/desktop-client/packaging
+mkdir -p dist
+docker run --rm --user $(id -u):$(id -g) -v "$PWD":/src:ro -v "$PWD/dist":/out amcp-winbuild \
+  /src/apps/desktop-client/packaging/package-windows-cross.sh
+# -> dist/amcp-desktop-windows-x64.zip
+```
+
+macOS cannot be cross-built this way: it needs Apple's SDK, which Apple licenses only for use on Apple hardware.
+Use the GitHub Actions macOS runner (workflow above) or a Mac.
+
 ## Prerequisites
 
 ### Ubuntu/Debian (Linux build)
