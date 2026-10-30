@@ -5,8 +5,8 @@
 		<div class="card bg-base-200" *ngFor="let report of reports">
 			<div class="card-body">
 				<h3 class="card-title text-lg">{{ report.title }}</h3>
-				<p class="text-xs text-gray-500">{{ report.domain }} · {{ report.period }}</p>
-				<p class="text-xs text-gray-500">Generated {{ report.generatedAt | date:'short' }}</p>
+				<p class="text-xs text-base-content/60">{{ report.domain }} · {{ report.period }}</p>
+				<p class="text-xs text-base-content/60">Generated {{ report.generatedAt | date:'short' }}</p>
 			</div>
 		</div>
 	</div>

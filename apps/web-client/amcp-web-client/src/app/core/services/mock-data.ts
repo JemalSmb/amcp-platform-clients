@@ -2,6 +2,7 @@ import {
   Alert,
   Asset,
   AppSettings,
+  DEFAULT_APP_SETTINGS,
   AutomationPlaybook,
   Detection,
   DomainStatus,
@@ -121,9 +122,4 @@ export const MOCK_HELP_DOCS: HelpDoc[] = [
   },
 ];
 
-export const MOCK_SETTINGS: AppSettings = {
-  theme: 'light',
-  emailAlerts: true,
-  alertSeverityThreshold: 'medium',
-  refreshIntervalSeconds: 30,
-};
+export const MOCK_SETTINGS: AppSettings = { ...DEFAULT_APP_SETTINGS };

@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+	themes: light --default, dark --prefersdark;
+}
 
 :root {
 	--domain-color: #2563eb;
@@ -10,6 +12,8 @@
 
 .domain-heading {
 	display: inline-block;
+	color: var(--color-base-content);
+	letter-spacing: -0.01em;
 	border-bottom: 3px solid var(--domain-color);
 	padding-bottom: 0.25rem;
 }
@@ -20,5 +24,9 @@
 	border-radius: 0.75rem;
 	padding: 2rem;
 	text-align: center;
-	color: color-mix(in srgb, var(--domain-color) 70%, black);
+	color: color-mix(in srgb, var(--domain-color) 70%, var(--color-base-content));
+}
+
+[data-theme='dark'] {
+	--domain-color-soft: color-mix(in srgb, var(--domain-color) 22%, var(--color-base-100));
 }

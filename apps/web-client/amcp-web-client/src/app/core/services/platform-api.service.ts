@@ -16,6 +16,8 @@ import {
   GatewayHealth,
   GatewayModelInfo,
   HelpDoc,
+  DEFAULT_APP_SETTINGS,
+  ProfileUpdate,
   Incident,
   Investigation,
   ModelInfo,
@@ -408,6 +410,14 @@ export class PlatformApiService {
     return this.http.get<UserProfile>(`${this.baseUrl}/profile`);
   }
 
+  updateProfile(update: ProfileUpdate): Observable<UserProfile> {
+    if (this.useMock) {
+      Object.assign(MOCK_PROFILE, update);
+      return of({ ...MOCK_PROFILE }).pipe(delay(MOCK_LATENCY_MS));
+    }
+    return this.http.put<UserProfile>(`${this.baseUrl}/profile`, update);
+  }
+
   getHelpDocs(): Observable<HelpDoc[]> {
     if (this.helpDocsSource === 'api') {
       if (this.useMock) {
@@ -447,7 +457,9 @@ export class PlatformApiService {
     if (this.useMock) {
       return of(MOCK_SETTINGS).pipe(delay(MOCK_LATENCY_MS));
     }
-    return this.http.get<AppSettings>(`${this.baseUrl}/settings`);
+    return this.http
+      .get<Partial<AppSettings>>(`${this.baseUrl}/settings`)
+      .pipe(map((stored) => ({ ...DEFAULT_APP_SETTINGS, ...stored })));
   }
 
   saveSettings(settings: AppSettings): Observable<AppSettings> {

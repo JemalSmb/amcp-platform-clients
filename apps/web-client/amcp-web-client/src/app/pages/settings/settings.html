@@ -1,37 +1,112 @@
-<section class="w-full max-w-md space-y-6" *ngIf="settings">
-	<h2 class="text-3xl font-bold domain-heading">Settings</h2>
+<section class="w-full max-w-3xl space-y-6" *ngIf="settings">
+	<div>
+		<h2 class="text-3xl font-bold domain-heading">Settings</h2>
+		<p class="mt-2 text-sm text-base-content/70">Choose how the dashboard looks and how you are notified.</p>
+	</div>
 
 	<div class="card bg-base-200">
-		<div class="card-body space-y-4">
-			<label class="form-control">
-				<span class="label-text">Theme</span>
-				<select class="select select-bordered" [(ngModel)]="settings.theme">
-					<option value="light">Light</option>
-					<option value="dark">Dark</option>
-				</select>
-			</label>
-
-			<label class="form-control">
-				<span class="label-text">Alert severity threshold</span>
-				<select class="select select-bordered" [(ngModel)]="settings.alertSeverityThreshold">
-					<option *ngFor="let severity of severities" [value]="severity">{{ severity }}</option>
-				</select>
-			</label>
-
-			<label class="form-control">
-				<span class="label-text">Refresh interval (seconds)</span>
-				<input class="input input-bordered" type="number" [(ngModel)]="settings.refreshIntervalSeconds" />
-			</label>
-
-			<label class="label cursor-pointer justify-start gap-3">
-				<input type="checkbox" class="checkbox" [(ngModel)]="settings.emailAlerts" />
-				<span class="label-text">Email me on new alerts</span>
-			</label>
-
-			<div class="flex items-center gap-3">
-				<button class="btn btn-primary" (click)="save()">Save settings</button>
-				<span class="text-sm text-success" *ngIf="saved">Saved</span>
-			</div>
+		<div class="card-body gap-4">
+			<h3 class="card-title text-lg">Appearance</h3>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Theme</legend>
+				<div class="join" role="radiogroup" aria-label="Theme">
+					<button
+						type="button"
+						*ngFor="let option of themes"
+						class="btn join-item"
+						[class.btn-primary]="settings.theme === option.value"
+						[attr.aria-pressed]="settings.theme === option.value"
+						(click)="setTheme(option.value)"
+					>{{ option.label }}</button>
+				</div>
+				<p class="label whitespace-normal">System follows your device's light or dark setting. Your choice applies right away on this device.</p>
+			</fieldset>
 		</div>
+	</div>
+
+	<div class="card bg-base-200">
+		<div class="card-body gap-4">
+			<h3 class="card-title text-lg">Notifications</h3>
+
+			<fieldset class="fieldset">
+				<label class="label cursor-pointer justify-between gap-4 text-base-content">
+					<span>
+						<span class="block font-medium">Email me about new alerts</span>
+						<span class="block text-xs text-base-content/60">Sent when an alert meets your severity threshold.</span>
+					</span>
+					<input type="checkbox" class="toggle toggle-primary" [(ngModel)]="settings.emailAlerts" (ngModelChange)="touch()" />
+				</label>
+			</fieldset>
+
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Notification email</legend>
+				<input
+					class="input w-full"
+					[class.input-error]="emailInvalid || emailMissing"
+					type="email"
+					autocomplete="email"
+					placeholder="you@example.com"
+					[(ngModel)]="settings.notificationEmail"
+					(ngModelChange)="touch()"
+				/>
+				<p class="label text-error whitespace-normal" *ngIf="emailInvalid">Enter a valid email address.</p>
+				<p class="label text-warning whitespace-normal" *ngIf="!emailInvalid && emailMissing">Add an email address to receive alert emails.</p>
+				<p class="label whitespace-normal" *ngIf="!emailInvalid && !emailMissing">Where alert and summary emails are sent.</p>
+			</fieldset>
+
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Alert severity threshold</legend>
+					<select class="select w-full" [(ngModel)]="settings.alertSeverityThreshold" (ngModelChange)="touch()">
+						<option *ngFor="let severity of severities" [value]="severity.value">{{ severity.label }}</option>
+					</select>
+					<p class="label whitespace-normal">
+						<ng-container *ngFor="let severity of severities">
+							<ng-container *ngIf="severity.value === settings.alertSeverityThreshold">{{ severity.hint }}</ng-container>
+						</ng-container>
+					</p>
+				</fieldset>
+
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Email summary</legend>
+					<select class="select w-full" [(ngModel)]="settings.emailDigest" (ngModelChange)="touch()">
+						<option *ngFor="let digest of digests" [value]="digest.value">{{ digest.label }}</option>
+					</select>
+					<p class="label whitespace-normal">A recap of alerts and incidents.</p>
+				</fieldset>
+			</div>
+
+			<fieldset class="fieldset">
+				<label class="label cursor-pointer justify-between gap-4 text-base-content">
+					<span>
+						<span class="block font-medium">Browser notifications</span>
+						<span class="block text-xs text-base-content/60">Show a desktop notification for new alerts while the dashboard is open.</span>
+					</span>
+					<input type="checkbox" class="toggle toggle-primary" [(ngModel)]="settings.browserNotifications" (ngModelChange)="onBrowserNotifications($event)" />
+				</label>
+			</fieldset>
+		</div>
+	</div>
+
+	<div class="card bg-base-200">
+		<div class="card-body gap-4">
+			<h3 class="card-title text-lg">Data</h3>
+			<fieldset class="fieldset">
+				<legend class="fieldset-legend">Refresh interval</legend>
+				<select class="select w-full sm:w-64" [(ngModel)]="settings.refreshIntervalSeconds" (ngModelChange)="touch()">
+					<option *ngFor="let seconds of refreshOptions" [ngValue]="seconds">Every {{ seconds >= 60 ? seconds / 60 + ' min' : seconds + ' sec' }}</option>
+				</select>
+				<p class="label whitespace-normal">How often live views check for new data.</p>
+			</fieldset>
+		</div>
+	</div>
+
+	<div class="flex flex-wrap items-center gap-3">
+		<button class="btn btn-primary" (click)="save()" [disabled]="saving || emailInvalid">
+			<span class="loading loading-spinner loading-xs" *ngIf="saving"></span>
+			Save settings
+		</button>
+		<span class="text-sm text-success" role="status" *ngIf="saved">Settings saved</span>
+		<span class="text-sm text-error" role="alert" *ngIf="error">{{ error }}</span>
 	</div>
 </section>

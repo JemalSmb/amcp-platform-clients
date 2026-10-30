@@ -131,12 +131,29 @@ export interface HelpDoc {
   content?: string;
 }
 
+export type EmailDigest = 'off' | 'daily' | 'weekly';
+
 export interface AppSettings {
-  theme: 'light' | 'dark';
+  theme: 'light' | 'dark' | 'system';
   emailAlerts: boolean;
+  notificationEmail: string;
+  emailDigest: EmailDigest;
   alertSeverityThreshold: Severity;
+  browserNotifications: boolean;
   refreshIntervalSeconds: number;
 }
+
+export const DEFAULT_APP_SETTINGS: AppSettings = {
+  theme: 'system',
+  emailAlerts: true,
+  notificationEmail: '',
+  emailDigest: 'off',
+  alertSeverityThreshold: 'medium',
+  browserNotifications: false,
+  refreshIntervalSeconds: 30,
+};
+
+export type ProfileUpdate = Pick<UserProfile, 'name' | 'timezone'>;
 
 // AMCP backend gateway contracts (amcp-services/.../services/gateway/gateway.py)
 

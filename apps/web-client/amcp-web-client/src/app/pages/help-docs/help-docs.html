@@ -1,6 +1,6 @@
 <section class="w-full space-y-6">
 	<h2 class="text-3xl font-bold domain-heading">Help Docs</h2>
-	<p class="text-sm opacity-70">Reference guides are served by the platform API.</p>
+	<p class="text-sm text-base-content/70">Reference guides are served by the platform API.</p>
 
 	<p class="text-sm text-error" *ngIf="error">{{ error }}</p>
 
@@ -22,7 +22,7 @@
 					<span class="badge badge-outline w-fit">{{ doc.source }}</span>
 				</div>
 				<h3 class="card-title text-lg">{{ doc.title }}</h3>
-				<p class="text-sm text-gray-500">{{ doc.summary }}</p>
+				<p class="text-sm text-base-content/60">{{ doc.summary }}</p>
 				<div class="card-actions justify-end">
 					<button class="btn btn-sm btn-primary" (click)="open(doc)" [disabled]="loadingId === doc.id">Open doc</button>
 				</div>

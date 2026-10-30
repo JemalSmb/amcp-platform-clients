@@ -8,7 +8,7 @@
 
 	<ng-container *ngIf="!domainService.currentMeta().comingSoon">
 	<div class="flex flex-wrap gap-4">
-		<select class="select select-bordered" [(ngModel)]="severityFilter">
+		<select class="select" [(ngModel)]="severityFilter">
 			<option value="all">All severities</option>
 			<option *ngFor="let severity of severities" [value]="severity">{{ severity }}</option>
 		</select>
@@ -29,7 +29,7 @@
 				<tr *ngFor="let alert of filteredAlerts">
 					<td>
 						<p class="font-medium">{{ alert.title }}</p>
-						<p class="text-xs text-gray-500">{{ alert.summary }}</p>
+						<p class="text-xs text-base-content/60">{{ alert.summary }}</p>
 					</td>
 					<td>{{ alert.domain }}</td>
 					<td>
@@ -44,7 +44,7 @@
 					<td>{{ alert.createdAt | date:'short' }}</td>
 				</tr>
 				<tr *ngIf="filteredAlerts.length === 0">
-					<td colspan="5" class="text-center text-gray-500">No alerts match the current filters.</td>
+					<td colspan="5" class="text-center text-base-content/60">No alerts match the current filters.</td>
 				</tr>
 			</tbody>
 		</table>
