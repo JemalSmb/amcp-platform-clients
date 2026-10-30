@@ -63,7 +63,7 @@ export class AdminApiService {
 
   getModels(): Observable<ModelRegistryEntry[]> {
     if (this.useMock) return of(MOCK_MODELS).pipe(delay(MOCK_LATENCY_MS));
-    return this.http.get<ModelRegistryEntry[]>(`${this.baseUrl}/models`);
+    return this.http.get<ModelRegistryEntry[]>(`${this.baseUrl}/admin/models`);
   }
 
   getPolicies(): Observable<Policy[]> {
