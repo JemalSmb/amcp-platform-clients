@@ -12,11 +12,63 @@ Includes:
 - shared client-side assets if needed
 - front-end build and deployment configuration
 
+## Desktop client build notes
+
+The desktop app is a Qt project and is cross-platform in source, but each OS requires its own native build.
+
+### Linux
+
+```bash
+cd amcp-platform-clients/apps/desktop-client
+cmake -S . -B build -G Ninja
+cmake --build build --target amcp_admin_desktop amcp_user_desktop -j$(nproc)
+```
+
+Run:
+
+```bash
+./build/amcp-admin-desktop/amcp_admin_desktop
+./build/amcp-user-desktop/amcp_user_desktop
+```
+
+### Windows
+
+Build on Windows or a Windows CI runner using Qt 6 and CMake/Ninja, then deploy with `windeployqt`.
+
+### macOS
+
+Build on macOS or a macOS CI runner using Qt 6 and CMake/Ninja, then deploy with `macdeployqt`.
+
+## Help Docs Source (Supabase)
+
+Help docs for both web and desktop clients are hosted in Supabase Storage.
+
+- Source files are in `docs/help/`.
+- A manifest file (`docs/help/manifest.json`) defines doc metadata.
+- Both clients fetch this manifest and open the docs from the public bucket path.
+
+### Sync docs to Supabase
+
+Run from this repository root:
+
+```bash
+SUPABASE_URL=https://<project-ref>.supabase.co \
+SUPABASE_SERVICE_ROLE_KEY=<service-role-key> \
+HELP_DOCS_SUPABASE_BUCKET=client-docs \
+HELP_DOCS_SUPABASE_PREFIX=help \
+node scripts/sync-help-docs-to-supabase.mjs
+```
+
+The script uploads `manifest.json` and all `.md` docs from `docs/help/`.
+It also creates the storage bucket as public when it does not exist.
+
 ## Repository layout
 
 ```text
-amcp-clients/
-├── interfaces/
+amcp-platform-clients/
+├── apps/
+│   ├── desktop-client/
+│   └── web-client/
 └── README.md
 ```
 

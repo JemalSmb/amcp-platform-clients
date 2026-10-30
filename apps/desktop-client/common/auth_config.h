@@ -12,8 +12,23 @@ inline QString envValue(const QString &key) {
     if (!fromEnv.isEmpty()) {
         return QString::fromUtf8(fromEnv);
     }
-    const QStringList candidates = {QDir::current().filePath(".env"),
-                                    QCoreApplication::applicationDirPath() + "/.env"};
+
+    QStringList candidates;
+    const QDir currentDir = QDir::current();
+    const QString appDir = QCoreApplication::applicationDirPath();
+
+    candidates << currentDir.filePath(".env");
+    candidates << appDir + "/.env";
+    candidates << appDir + "/../.env";
+    candidates << appDir + "/../../.env";
+    candidates << appDir + "/../../../.env";
+
+    const QString currentPath = currentDir.absolutePath();
+    const QStringList extraRoots = {currentPath, appDir, QDir(appDir).filePath(".."), QDir(appDir).filePath("../..")};
+    for (const QString &root : extraRoots) {
+        candidates << QDir(root).filePath(".env");
+    }
+
     for (const QString &path : candidates) {
         QFile file(path);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -37,6 +52,13 @@ inline QString envValue(const QString &key) {
 
 inline QString supabaseUrl() { return envValue("SUPABASE_URL"); }
 inline QString supabaseAnonKey() { return envValue("SUPABASE_ANON_KEY"); }
+
+inline QString trimPath(const QString &input) {
+    QString out = input;
+    while (out.startsWith('/')) out.remove(0, 1);
+    while (out.endsWith('/')) out.chop(1);
+    return out;
+}
 
 inline QString apiBaseUrl() { return envValue("API_BASE_URL"); }
 inline QString gatewayBaseUrl() {

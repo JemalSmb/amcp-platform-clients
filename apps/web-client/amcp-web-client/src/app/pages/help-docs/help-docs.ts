@@ -14,8 +14,30 @@ export class HelpDocs {
   private readonly api = inject(PlatformApiService);
 
   docs: HelpDoc[] = [];
+  openDoc: HelpDoc | null = null;
+  loadingId: string | null = null;
+  error = '';
 
   constructor() {
     this.api.getHelpDocs().subscribe((docs) => (this.docs = docs));
+  }
+
+  open(doc: HelpDoc): void {
+    this.error = '';
+    this.loadingId = doc.id;
+    this.api.getHelpDoc(doc).subscribe({
+      next: (full) => {
+        this.openDoc = full;
+        this.loadingId = null;
+      },
+      error: () => {
+        this.error = `Could not load "${doc.title}".`;
+        this.loadingId = null;
+      },
+    });
+  }
+
+  close(): void {
+    this.openDoc = null;
   }
 }

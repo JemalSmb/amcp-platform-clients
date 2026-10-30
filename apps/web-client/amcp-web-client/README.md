@@ -12,6 +12,20 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
+## Help docs configuration
+
+The Help Docs page reads docs metadata from Supabase Storage by default.
+
+Set these values in `.env`:
+
+```bash
+HELP_DOCS_SOURCE=supabase
+HELP_DOCS_SUPABASE_BUCKET=client-docs
+HELP_DOCS_SUPABASE_PREFIX=help
+```
+
+Use `HELP_DOCS_SOURCE=api` only if you want to serve docs from the backend `/help-docs` endpoint.
+
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:

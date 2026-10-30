@@ -17,6 +17,8 @@ public:
     bool isLoggedIn() const { return !m_accessToken.isEmpty(); }
     QString accessToken() const { return m_accessToken; }
     QString email() const { return m_email; }
+    QString role() const { return m_role; }
+    bool hasRole(const QString &requiredRole) const { return !requiredRole.isEmpty() && m_role == requiredRole; }
     QString errorMessage() const { return m_error; }
 
 private:
@@ -28,6 +30,7 @@ private:
     QString m_accessToken;
     QString m_refreshToken;
     QString m_email;
+    QString m_role;
     qint64 m_expiresAt = 0;
     QString m_error;
 };

@@ -58,6 +58,88 @@ const SERVICE_TO_DOMAIN: Record<string, PlatformDomain> = {
 
 const ALL_DOMAINS: PlatformDomain[] = ['cybersecurity', 'finance', 'manufacturing', 'agriculture'];
 
+type HelpDocsSource = 'local' | 'supabase' | 'api';
+
+interface HelpDocManifestEntry {
+  id: string;
+  title: string;
+  category: string;
+  summary: string;
+  fileName: string;
+}
+
+const HELP_DOCS_MANIFEST_PATH = '/docs/manifest.json';
+
+function normalizeHelpDocsSource(source: string | undefined): HelpDocsSource {
+  const normalized = (source ?? 'api').toLowerCase();
+  if (normalized === 'api' || normalized === 'supabase' || normalized === 'local') {
+    return normalized;
+  }
+  return 'api';
+}
+
+function trimPath(value: string | undefined): string {
+  return (value ?? '').replace(/^\/+|\/+$/g, '');
+}
+
+function mapManifestDocToHelpDoc(
+  entry: HelpDocManifestEntry,
+  source: HelpDocsSource,
+  supabaseUrl: string,
+  supabaseBucket: string,
+  supabasePrefix: string,
+): HelpDoc {
+  const safeFileName = entry.fileName.replace(/^\/+/, '');
+  const localUrl = `/docs/${safeFileName}`;
+
+  if (source === 'supabase') {
+    const bucket = trimPath(supabaseBucket);
+    if (bucket.length > 0) {
+      const prefix = trimPath(supabasePrefix);
+      const objectPath = prefix.length > 0 ? `${prefix}/${safeFileName}` : safeFileName;
+      const baseUrl = supabaseUrl.replace(/\/+$/, '');
+      return {
+        id: entry.id,
+        title: entry.title,
+        category: entry.category,
+        summary: entry.summary,
+        url: `${baseUrl}/storage/v1/object/public/${bucket}/${objectPath}`,
+        source: 'supabase',
+      };
+    }
+  }
+
+  return {
+    id: entry.id,
+    title: entry.title,
+    category: entry.category,
+    summary: entry.summary,
+    url: localUrl,
+    source: 'local',
+  };
+}
+
+function buildSupabasePublicObjectUrl(supabaseUrl: string, bucket: string, prefix: string, fileName: string): string {
+  const baseUrl = supabaseUrl.replace(/\/+$/, '');
+  const normalizedBucket = trimPath(bucket);
+  const normalizedPrefix = trimPath(prefix);
+  const safeFileName = fileName.replace(/^\/+/, '');
+  const objectPath = normalizedPrefix.length > 0 ? `${normalizedPrefix}/${safeFileName}` : safeFileName;
+  return `${baseUrl}/storage/v1/object/public/${normalizedBucket}/${objectPath}`;
+}
+
+function resolveHelpDocsManifestUrl(source: HelpDocsSource): string {
+  if (source === 'supabase') {
+    return buildSupabasePublicObjectUrl(
+      appConfigValues.supabaseUrl,
+      appConfigValues.helpDocsSupabaseBucket,
+      appConfigValues.helpDocsSupabasePrefix,
+      'manifest.json',
+    );
+  }
+  return HELP_DOCS_MANIFEST_PATH;
+}
+
 function mapModelStatus(status: string | undefined, trained: boolean): ModelStatus {
   const normalized = (status ?? '').toLowerCase();
   if (['healthy', 'ready', 'active', 'online', 'ok'].includes(normalized)) {
@@ -139,6 +221,7 @@ export class PlatformApiService {
   private readonly gatewayUrl = appConfigValues.gatewayBaseUrl;
   private readonly useMock = appConfigValues.useMockData;
   private readonly useGateway = appConfigValues.useGatewayData;
+  private readonly helpDocsSource = normalizeHelpDocsSource(appConfigValues.helpDocsSource);
 
   health(): Observable<{ status: string }> {
     if (this.useMock) {
@@ -326,10 +409,38 @@ export class PlatformApiService {
   }
 
   getHelpDocs(): Observable<HelpDoc[]> {
-    if (this.useMock) {
-      return of(MOCK_HELP_DOCS).pipe(delay(MOCK_LATENCY_MS));
+    if (this.helpDocsSource === 'api') {
+      if (this.useMock) {
+        return of(MOCK_HELP_DOCS).pipe(delay(MOCK_LATENCY_MS));
+      }
+      return this.http
+        .get<HelpDoc[]>(`${this.baseUrl}/help-docs`)
+        .pipe(catchError(() => of(MOCK_HELP_DOCS)));
     }
-    return this.http.get<HelpDoc[]>(`${this.baseUrl}/help-docs`);
+
+    return this.http.get<HelpDocManifestEntry[]>(resolveHelpDocsManifestUrl(this.helpDocsSource)).pipe(
+      map((entries) =>
+        entries.map((entry) =>
+          mapManifestDocToHelpDoc(
+            entry,
+            this.helpDocsSource,
+            appConfigValues.supabaseUrl,
+            appConfigValues.helpDocsSupabaseBucket,
+            appConfigValues.helpDocsSupabasePrefix,
+          ),
+        ),
+      ),
+      catchError(() => of(MOCK_HELP_DOCS)),
+    );
+  }
+
+  getHelpDoc(doc: HelpDoc): Observable<HelpDoc> {
+    if (doc.source !== 'api' || this.useMock) {
+      return this.http
+        .get(doc.url, { responseType: 'text' })
+        .pipe(map((content) => ({ ...doc, content })));
+    }
+    return this.http.get<HelpDoc>(`${this.baseUrl}/help-docs/${encodeURIComponent(doc.id)}`);
   }
 
   getSettings(): Observable<AppSettings> {

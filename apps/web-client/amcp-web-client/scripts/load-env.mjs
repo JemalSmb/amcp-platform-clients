@@ -14,7 +14,15 @@ if (existsSync(envPath)) {
 }
 const get = (k, d = '') => process.env[k] ?? fileVars[k] ?? d;
 
-const KEYS = [["apiBaseUrl", "API_BASE_URL"], ["gatewayBaseUrl", "GATEWAY_BASE_URL"], ["supabaseUrl", "SUPABASE_URL"], ["supabaseAnonKey", "SUPABASE_ANON_KEY"]];
+const KEYS = [
+  ["apiBaseUrl", "API_BASE_URL"],
+  ["gatewayBaseUrl", "GATEWAY_BASE_URL"],
+  ["supabaseUrl", "SUPABASE_URL"],
+  ["supabaseAnonKey", "SUPABASE_ANON_KEY"],
+  ["helpDocsSource", "HELP_DOCS_SOURCE"],
+  ["helpDocsSupabaseBucket", "HELP_DOCS_SUPABASE_BUCKET"],
+  ["helpDocsSupabasePrefix", "HELP_DOCS_SUPABASE_PREFIX"],
+];
 const env = Object.fromEntries(KEYS.map(([name, key]) => [name, get(key)]));
 
 const missing = KEYS.filter(([, key]) => !get(key)).map(([, key]) => key);

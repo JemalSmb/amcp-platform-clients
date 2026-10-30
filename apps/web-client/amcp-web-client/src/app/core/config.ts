@@ -6,6 +6,9 @@ export const appConfigValues = {
   gatewayBaseUrl: env.gatewayBaseUrl,
   supabaseUrl: env.supabaseUrl,
   supabaseAnonKey: env.supabaseAnonKey,
+  helpDocsSource: env.helpDocsSource,
+  helpDocsSupabaseBucket: env.helpDocsSupabaseBucket,
+  helpDocsSupabasePrefix: env.helpDocsSupabasePrefix,
   useMockData: true,
   useGatewayData: true,
 };
