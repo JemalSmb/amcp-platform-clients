@@ -48,11 +48,26 @@ LoginDialog::LoginDialog(SupabaseAuth *auth, const QString &title, bool allowSig
     connect(m_password, &QLineEdit::returnPressed, this, &LoginDialog::submit);
     connect(m_toggle, &QPushButton::clicked, this, &LoginDialog::toggleMode);
 
-    m_signupMode = true;
-    toggleMode();
+    m_signupMode = !m_allowSignup;
+    if (!m_allowSignup) {
+        m_name->hide();
+        m_toggle->hide();
+        m_submit->setText("Login");
+        m_error->clear();
+        return;
+    }
+
+    m_name->setVisible(m_signupMode);
+    m_submit->setText(m_signupMode ? "Create Account" : "Login");
+    m_toggle->setText(m_signupMode ? "Already have an account? Login"
+                                   : "Don't have an account? Signup here");
+    m_error->clear();
 }
 
 void LoginDialog::toggleMode() {
+    if (!m_allowSignup) {
+        return;
+    }
     m_signupMode = !m_signupMode;
     m_name->setVisible(m_signupMode);
     m_submit->setText(m_signupMode ? "Create Account" : "Login");

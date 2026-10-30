@@ -5,6 +5,7 @@
 #include <QComboBox>
 #include <QDialog>
 #include <QDialogButtonBox>
+#include <QDesktopServices>
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -14,6 +15,7 @@
 #include <QLineEdit>
 #include <memory>
 #include <QTableWidget>
+#include <QUrl>
 #include <QVBoxLayout>
 
 namespace {
@@ -45,6 +47,15 @@ RemoteSpec arraySpec(const QString &path, const QStringList &fields, bool gatewa
     s.gateway = gateway;
     s.map = [fields](const QVector<QJsonDocument> &d) { return mapArray(d.value(0), fields); };
     return s;
+}
+
+QString concatUrl(const QString &base, const QString &path) {
+    if (path.startsWith("http://") || path.startsWith("https://")) {
+        return path;
+    }
+    const QString normalizedBase = base.endsWith('/') ? base.left(base.size() - 1) : base;
+    const QString normalizedPath = path.startsWith('/') ? path : "/" + path;
+    return normalizedBase + normalizedPath;
 }
 
 RemoteSpec objectSpec(const QString &path, const QVector<QPair<QString, QString>> &fields) {
@@ -127,7 +138,7 @@ RemoteSpec assets() { return arraySpec("/assets", {"name", "domain", "type", "ri
 RemoteSpec automations() { return arraySpec("/automations", {"name", "domain", "status", "runCount"}); }
 RemoteSpec reports() { return arraySpec("/reports", {"title", "domain", "period"}); }
 RemoteSpec notifications() { return arraySpec("/notifications", {"message", "read"}); }
-RemoteSpec helpDocs() { return arraySpec("/help-docs", {"title", "category"}); }
+RemoteSpec helpDocs() { return arraySpec("/help-docs", {"title", "category", "summary"}); }
 RemoteSpec profile() {
     return objectSpec("/profile", {{"name", "Name"}, {"email", "Email"}, {"role", "Role"}, {"timezone", "Timezone"}});
 }
@@ -252,7 +263,9 @@ void DataPage::reload() {
         m_status->setText("Showing sample data (mock mode)");
         return;
     }
-    const QString base = m_spec.gateway ? gatewayBaseUrl() : apiBaseUrl();
+    const QString base = !m_spec.baseOverride.isEmpty()
+                             ? m_spec.baseOverride
+                             : (m_spec.gateway ? gatewayBaseUrl() : apiBaseUrl());
     if (base.isEmpty()) {
         m_status->setText("Showing sample data (API_BASE_URL not set)");
         return;
@@ -264,7 +277,7 @@ void DataPage::reload() {
     auto failed = std::make_shared<QString>();
 
     for (int i = 0; i < m_spec.paths.size(); ++i) {
-        m_api->get(base + m_spec.paths[i], [this, i, docs, pending, failed](bool ok, const QJsonDocument &doc, const QString &err) {
+        m_api->get(concatUrl(base, m_spec.paths[i]), [this, i, docs, pending, failed](bool ok, const QJsonDocument &doc, const QString &err) {
             if (!ok) *failed = err;
             (*docs)[i] = doc;
             if (--(*pending) > 0) return;
@@ -347,5 +360,17 @@ DataPage *createDataPage(ApiClient *api, RemoteSpec spec, const QString &title, 
     auto *page = new DataPage(api, title, headers, fallbackRows, std::move(spec));
     if (title == "Users and Access") addUserActions(page);
     if (title == "Automation Runs" || title == "Automation and Playbooks") addAutomationActions(page);
+    if (title == "Help and Docs") {
+        page->addButton("Open selected doc", [page]() {
+            const QString url = page->selectedCell(2);
+            if (url.isEmpty()) {
+                page->showMessage("Select a doc first.");
+                return;
+            }
+            if (!QDesktopServices::openUrl(QUrl(url))) {
+                page->showMessage("Could not open the selected doc URL.");
+            }
+        });
+    }
     return page;
 }

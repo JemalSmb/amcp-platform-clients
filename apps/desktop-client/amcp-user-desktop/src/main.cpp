@@ -311,11 +311,11 @@ int main(int argc, char *argv[]) {
 
     stackedWidget->addWidget(createDataPage(&api, specs::helpDocs(),
         "Help and Docs",
-        {"Title", "Category"},
+        {"Title", "Category", "Summary"},
         {
-            {"Getting started with the dashboard", "Basics"},
-            {"Understanding alert severity", "Alerts"},
-            {"Configuring automation playbooks", "Automation"},
+            {"Getting started with the dashboard", "Basics", ""},
+            {"Understanding alert severity", "Alerts", ""},
+            {"Configuring automation playbooks", "Automation", ""},
         }));
 
     stackedWidget->addWidget(createDataPage(&api, specs::settings(),

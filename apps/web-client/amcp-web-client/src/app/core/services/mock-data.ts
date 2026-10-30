@@ -95,9 +95,30 @@ export const MOCK_PROFILE: UserProfile = {
 };
 
 export const MOCK_HELP_DOCS: HelpDoc[] = [
-  { id: 'hd-1', title: 'Getting started with the dashboard', category: 'Basics', summary: 'Overview of the model status, alerts, and predictions views.' },
-  { id: 'hd-2', title: 'Understanding alert severity', category: 'Alerts', summary: 'How severity levels are assigned and what they mean.' },
-  { id: 'hd-3', title: 'Configuring automation playbooks', category: 'Automation', summary: 'How to enable, disable, and trigger response playbooks.' },
+  {
+    id: 'hd-1',
+    title: 'Getting started with the dashboard',
+    category: 'Basics',
+    summary: 'Overview of the model status, alerts, and predictions views.',
+    url: '/docs/getting-started.md',
+    source: 'local',
+  },
+  {
+    id: 'hd-2',
+    title: 'Understanding alert severity',
+    category: 'Alerts',
+    summary: 'How severity levels are assigned and what they mean.',
+    url: '/docs/alert-severity.md',
+    source: 'local',
+  },
+  {
+    id: 'hd-3',
+    title: 'Configuring automation playbooks',
+    category: 'Automation',
+    summary: 'How to enable, disable, and trigger response playbooks.',
+    url: '/docs/automation-playbooks.md',
+    source: 'local',
+  },
 ];
 
 export const MOCK_SETTINGS: AppSettings = {

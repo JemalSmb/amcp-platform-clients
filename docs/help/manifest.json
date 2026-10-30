@@ -1,0 +1,23 @@
+[
+  {
+    "id": "hd-1",
+    "title": "Getting Started With The Dashboard",
+    "category": "Basics",
+    "summary": "Overview of model status, alerts, and prediction workflows.",
+    "fileName": "getting-started.md"
+  },
+  {
+    "id": "hd-2",
+    "title": "Understanding Alert Severity",
+    "category": "Alerts",
+    "summary": "How low, medium, high, and critical severities should be interpreted.",
+    "fileName": "alert-severity.md"
+  },
+  {
+    "id": "hd-3",
+    "title": "Configuring Automation Playbooks",
+    "category": "Automation",
+    "summary": "How to validate and operate automation playbooks safely.",
+    "fileName": "automation-playbooks.md"
+  }
+]

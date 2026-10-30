@@ -126,6 +126,9 @@ export interface HelpDoc {
   title: string;
   category: string;
   summary: string;
+  url: string;
+  source: 'local' | 'supabase' | 'api';
+  content?: string;
 }
 
 export interface AppSettings {

@@ -1,46 +1,109 @@
 # AMCP Qt Desktop Clients
 
-This folder contains two basic Qt desktop applications:
+This folder contains two Qt desktop applications:
 
-- `amcp-admin-desktop`: Admin-facing desktop app shell
-- `amcp-user-desktop`: Regular-user desktop app shell
+- `amcp-admin-desktop`: admin-facing desktop client
+- `amcp-user-desktop`: regular user desktop client
+
+## Important: cross-platform build reality
+
+Qt is cross-platform at the source-code level, but it does not produce one universal executable for Linux, Windows, and macOS.
+
+Each platform needs its own native build:
+
+- Linux: Linux executable
+- Windows: `.exe` executable
+- macOS: `.app` bundle or packaged macOS binary
+
+This machine is Linux, so the build here can only produce the Linux binaries unless a Windows or macOS toolchain is configured.
 
 ## Prerequisites
 
-You mentioned you already have Qt VS Code extensions but not local libraries.
-You still need local Qt development libraries installed for building/running.
-
-### Ubuntu/Debian (Qt6)
+### Ubuntu/Debian (Linux build)
 
 ```bash
 sudo apt update
-sudo apt install -y build-essential cmake ninja-build libgl1-mesa-dev libglu1-mesa-dev qt6-base-dev
+sudo apt install -y \
+  build-essential \
+  cmake \
+  ninja-build \
+  pkg-config \
+  libgl1-mesa-dev \
+  libglu1-mesa-dev \
+  qt6-base-dev \
+  qt6-svg-dev \
+  qt6-tools-dev \
+  qt6-tools-dev-tools
 ```
 
-### If only Qt5 is available
+If `sudo` is unavailable in your environment, you must run this as a user with package-manager privileges or use a preconfigured dev container / VM.
 
-```bash
-sudo apt update
-sudo apt install -y build-essential cmake ninja-build qtbase5-dev
-```
+## Build on Linux
 
-## Build (both apps)
-
-From this directory (`apps/desktop-client`):
+From `apps/desktop-client`:
 
 ```bash
 cmake -S . -B build -G Ninja
-cmake --build build
+cmake --build build --target amcp_admin_desktop amcp_user_desktop -j$(nproc)
 ```
 
-## Run
+Outputs:
 
 ```bash
 ./build/amcp-admin-desktop/amcp_admin_desktop
 ./build/amcp-user-desktop/amcp_user_desktop
 ```
 
+## Run on Linux
+
+```bash
+./build/amcp-admin-desktop/amcp_admin_desktop
+./build/amcp-user-desktop/amcp_user_desktop
+```
+
+## Windows build
+
+A Windows build must be performed on Windows or in a Windows CI runner.
+
+Example workflow:
+
+```powershell
+cd C:\path\to\amcp-platform-clients\apps\desktop-client
+call "C:\Qt\6.x\msvc2019_64\bin\qtvars.bat"
+cmake -S . -B build -G "Ninja" -DCMAKE_PREFIX_PATH=C:/Qt/6.x/msvc2019_64
+cmake --build build --target amcp_admin_desktop amcp_user_desktop
+windeployqt build\amcp-admin-desktop\amcp_admin_desktop.exe
+windeployqt build\amcp-user-desktop\amcp_user_desktop.exe
+```
+
+This produces Windows `.exe` files, not Linux binaries.
+
+## macOS build
+
+A macOS build must be performed on macOS or in a macOS CI runner.
+
+Example workflow:
+
+```bash
+cd /path/to/amcp-platform-clients/apps/desktop-client
+export PATH="/opt/homebrew/opt/qt/bin:$PATH"
+cmake -S . -B build -G Ninja -DCMAKE_PREFIX_PATH=/opt/homebrew/opt/qt
+cmake --build build --target amcp_admin_desktop amcp_user_desktop
+macdeployqt build/amcp-admin-desktop/amcp_admin_desktop.app -dmg
+macdeployqt build/amcp-user-desktop/amcp_user_desktop.app -dmg
+```
+
+This produces macOS app bundles or `.dmg` packages.
+
 ## Notes
 
-- The top-level CMake checks Qt6 first, then falls back to Qt5.
+- The source project is Qt6-first and can be configured to build on more than one OS.
+- There is no single executable that runs on Linux, Windows, and macOS from one build.
+- The top-level CMake checks Qt6 first and may fall back to Qt5 if that is the only available toolchain.
 - These are starter shells intended to be extended with real features and backend integration.
+
+## Help docs
+
+The "Help and Docs" page lists docs from the gateway API (`GET /help-docs`; `GET /help-docs/<id>` returns the Markdown content).
+The gateway reads them from the private Supabase Storage bucket (`client-docs/help`) with its service role key; clients never
+access Storage directly. Upload changes with `node scripts/sync-help-docs-to-supabase.mjs` from the repo root.

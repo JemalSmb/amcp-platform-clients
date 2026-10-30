@@ -11,6 +11,7 @@
 #include <QIcon>
 #include <QLabel>
 #include <QMainWindow>
+#include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
 #include <QPushButton>
@@ -136,11 +137,16 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setApplicationName("amcp-admin-desktop");
 
     SupabaseAuth auth("amcp/admin/auth");
-    if (!auth.restoreSession()) {
+    if (!auth.restoreSession() || !auth.hasRole("admin")) {
         LoginDialog login(&auth, "AMCP Admin Desktop", false);
         if (login.exec() != QDialog::Accepted) {
             return 0;
         }
+    }
+    if (!auth.hasRole("admin")) {
+        QMessageBox::critical(nullptr, "Access denied",
+                              "This account is not authorized for the admin app.");
+        return 0;
     }
 
     ApiClient api(&auth);
@@ -202,6 +208,7 @@ int main(int argc, char *argv[]) {
         {"Observability", ":/icons/admin/Observability.svg"},
         {"Deployments and Environments", ":/icons/admin/Deployements.svg"},
         {"Audit and Compliance", ":/icons/admin/Audit.svg"},
+        {"Help and Docs", ":/icons/admin/SystemSettings.svg"},
         {"System Settings", ":/icons/admin/SystemSettings.svg"}
     };
 
@@ -329,6 +336,15 @@ int main(int argc, char *argv[]) {
             {"jamalsamba@gmail.com", "Updated policy", "pol-1"},
             {"s.rao@example.com", "Deployed model version", "phishing_detection@1.0.4"},
             {"jamalsamba@gmail.com", "Invited user", "k.novak@example.com"},
+        }));
+
+    stackedWidget->addWidget(createDataPage(&api, specs::helpDocs(),
+        "Help and Docs",
+        {"Title", "Category", "Summary"},
+        {
+            {"Getting started with the dashboard", "Basics", ""},
+            {"Understanding alert severity", "Alerts", ""},
+            {"Configuring automation playbooks", "Automation", ""},
         }));
 
     stackedWidget->addWidget(createDataPage(&api, specs::adminSettings(),

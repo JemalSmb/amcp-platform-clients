@@ -44,7 +44,11 @@ bool SupabaseAuth::applySession(const QJsonObject &obj) {
     }
     m_accessToken = token;
     m_refreshToken = obj.value("refresh_token").toString();
-    m_email = obj.value("user").toObject().value("email").toString(m_email);
+
+    const QJsonObject user = obj.value("user").toObject();
+    m_email = user.value("email").toString(m_email);
+    m_role = user.value("app_metadata").toObject().value("role").toString();
+
     const qint64 expiresIn = obj.value("expires_in").toInteger(3600);
     m_expiresAt = QDateTime::currentSecsSinceEpoch() + expiresIn;
     persist();
@@ -56,6 +60,7 @@ void SupabaseAuth::persist() const {
     s.setValue(m_prefix + "/accessToken", m_accessToken);
     s.setValue(m_prefix + "/refreshToken", m_refreshToken);
     s.setValue(m_prefix + "/email", m_email);
+    s.setValue(m_prefix + "/role", m_role);
     s.setValue(m_prefix + "/expiresAt", m_expiresAt);
 }
 
@@ -96,6 +101,7 @@ bool SupabaseAuth::restoreSession() {
     m_accessToken = s.value(m_prefix + "/accessToken").toString();
     m_refreshToken = s.value(m_prefix + "/refreshToken").toString();
     m_email = s.value(m_prefix + "/email").toString();
+    m_role = s.value(m_prefix + "/role").toString();
     m_expiresAt = s.value(m_prefix + "/expiresAt").toLongLong();
 
     if (m_accessToken.isEmpty()) {
@@ -118,6 +124,7 @@ bool SupabaseAuth::restoreSession() {
 void SupabaseAuth::logout() {
     m_accessToken.clear();
     m_refreshToken.clear();
+    m_role.clear();
     m_expiresAt = 0;
     QSettings s;
     s.remove(m_prefix);

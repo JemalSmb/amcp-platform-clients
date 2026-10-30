@@ -22,6 +22,7 @@ struct Row {
 struct RemoteSpec {
     QStringList paths;
     bool gateway = false;
+    QString baseOverride;
     std::function<QVector<Row>(const QVector<QJsonDocument> &)> map;
 };
 
